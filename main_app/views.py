@@ -48,3 +48,6 @@ class Map(LoginView):
 
 class Trip(LoginView):
     template_name = 'trip.html'        
+
+class AddTrip(LoginView):
+    template_name = 'addTrip.html'        
