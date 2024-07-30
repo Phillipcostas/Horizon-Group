@@ -7,15 +7,18 @@ from django.contrib.auth.decorators import login_required
 
 
 
-
-
-
 def home(request):
-        return render(request, 'home.html')
+    return render(request, 'home.html')
 
 
 def about(request):
     return render(request, 'base.html')
+
+def about(request):
+    return render(request, 'map.html')
+
+def about(request):
+    return render(request, 'trip.html')
 
 def signup(request):
     error_message = ''
@@ -39,3 +42,9 @@ class Home(LoginView):
 
 class LoginView(LoginView):
     template_name = 'login.html'
+
+class Map(LoginView):
+    template_name = 'map.html'
+
+class Trip(LoginView):
+    template_name = 'trip.html'        
