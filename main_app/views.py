@@ -36,6 +36,24 @@ def signup(request):
     context = {"form": form, "error_message": error_message}
     return render(request, "signup.html", context)
 
+@login_required
+def calendar_view(request):
+    events = Event.objects.filter(user=request.user)
+    form = EventForm()
+    return render(request, 'calendar.html', {'events': events, 'form': form})
+
+@login_required
+def add_event(request):
+    if request.method == 'POST':
+        form = EventForm(request.POST)
+        if form.is_valid():
+            event = form.save(commit=False)
+            event.user = request.user
+            event.save()
+            return redirect('calendar')
+    else:
+        form = EventForm()
+    return render(request, 'calendar.html', {'form': form})
 
 class Home(LoginView):
     template_name = "home.html"
