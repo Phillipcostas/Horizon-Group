@@ -1,4 +1,4 @@
-from django.shortcuts import render, redirect
+from django.shortcuts import render, redirect, get_object_or_404
 
 from django.contrib.auth.views import LoginView
 from django.contrib.auth import login
@@ -52,10 +52,6 @@ class Map(LoginView):
     template_name = "map.html"
 
 
-class Trip(LoginView):
-    template_name = "trip.html"
-
-
 class AddTrip(LoginRequiredMixin, View):
     def get(self, request):
         form = TripForm()
@@ -67,6 +63,30 @@ class AddTrip(LoginRequiredMixin, View):
             trip = form.save(commit=False)
             trip.user = request.user
             trip.save()
-            return redirect('/trip')  
+            return redirect('trip_list')  
         return render(request, 'addTrip.html', {'form': form})
+    
+class TripListView(LoginRequiredMixin, View):
+    def get(self, request):
+        trips = Trip.objects.filter(user=request.user)
+        return render(request, 'trip.html', {'trips': trips})
+    
+class TripDetailView(LoginRequiredMixin, View):
+    def get(self, request, pk):
+        trip = get_object_or_404(Trip, pk=pk, user=request.user)
+        form = TripForm(instance=trip)
+        return render(request, 'trip_detail.html', {'form': form, 'trip': trip})
 
+    def post(self, request, pk):
+        trip = get_object_or_404(Trip, pk=pk, user=request.user)
+        if 'save' in request.POST:
+            form = TripForm(request.POST, instance=trip)
+            if form.is_valid():
+                form.save()
+                return redirect('trip_detail', pk=pk)
+        elif 'delete' in request.POST:
+            trip.delete()
+            return redirect('trip_list')
+        else:
+            form = TripForm(instance=trip)
+        return render(request, 'trip_detail.html', {'form': form, 'trip': trip})
