@@ -17,8 +17,9 @@ def about(request):
 def about(request):
     return render(request, 'map.html')
 
-def about(request):
-    return render(request, 'trip.html')
+def trip_index(request):
+    trips = Trip.objects.filter(user=request.user)
+    return render(request, 'trip.html', { 'trips': trips })
 
 def signup(request):
     error_message = ''
@@ -40,7 +41,7 @@ def signup(request):
 class Home(LoginView):
     template_name = 'home.html'
 
-class LoginView(LoginView):
+class Login(LoginView):
     template_name = 'login.html'
 
 class Map(LoginView):

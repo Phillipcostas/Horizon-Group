@@ -23,13 +23,13 @@
             <a class="nav-link link-light" href="{% url 'map' %}">Map</a>
 
             <li class="nav-item">
-              <a class="nav-link link-light" href="{% url 'trip' %}">Trip</a>
+              <a class="nav-link link-light" href="{% url 'trip_index' %}">Trip</a>
 
             <li class="nav-item">
               <a class="nav-link link-light" href="{% url 'addTrip' %}">Add Trip</a>
 
           <li class="nav-item">  
-            <a class="nav-link link-light" href="{% url 'login' %}">Log Out</a>
+            <a class="nav-link link-light" href="{% url 'logout' %}">Log Out</a>
             <form id="logout-form" method="post" action="{% url 'logout' %}" style="display: none;">
               {% csrf_token %}
             </form>
