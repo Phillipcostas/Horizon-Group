@@ -4,7 +4,26 @@
 
 {% block content %}
 <div class="jumbotron">
-  <h1 class="display-4">Welcome to your trip</h1>
-  <p class="lead">This is the trip page.</p>
+  <h1 class="display-4">Welcome to your Trip</h1>
+  <p class="lead">This is the Trip Page.</p>
 </div>
+
+<section class="card-container">
+  {% for trip in trips %}
+    <div class="card">
+      <a href="{% url 'trip' trip.id %}">
+        <div class="card-content">
+          <div class="card-img-container">
+            {% comment %} <img {% endcomment %}
+              {% comment %} src="{% static '' %}"
+              alt="" {% endcomment %}
+              {% comment %} /> {% endcomment %}
+          </div>
+          <h2 class="card-title">{{ trip.name }}</h2>
+          <p><small>{{ trip.itinerary }}</small></p>
+        </div>
+      </a>
+    </div>
+    {% endfor %}
+</section>
 {% endblock %}
