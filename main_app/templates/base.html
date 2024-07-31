@@ -33,13 +33,17 @@
             <form id="logout-form" method="post" action="{% url 'logout' %}" style="display: none;">
               {% csrf_token %}
             </form>
+
             {% else %}
+
             <li class="nav-item">
               <a class="nav-link link-light" href="{% url 'signup' %}">Sign Up</a>
             </li>
             <li class="nav-item">
               <a class="nav-link link-light" href="{% url 'login' %}">Sign In</a>
+
               {% endif %}
+              
             </li>
           </li>
         </ul>
