@@ -5,6 +5,9 @@ from django.contrib.auth import login
 from django.contrib.auth.forms import UserCreationForm
 from django.contrib.auth.decorators import login_required
 from .models import UserProfile, Trip, Itinerary
+from django.contrib.auth.mixins import LoginRequiredMixin
+from django.views.generic import View
+from .froms import TripForm
 
 
 def about(request):
@@ -53,6 +56,17 @@ class Trip(LoginView):
     template_name = "trip.html"
 
 
-class AddTrip(LoginView):
-    template_name = "addTrip.html"
+class AddTrip(LoginRequiredMixin, View):
+    def get(self, request):
+        form = TripForm()
+        return render(request, 'addTrip.html', {'form': form})
+
+    def post(self, request):
+        form = TripForm(request.POST)
+        if form.is_valid():
+            trip = form.save(commit=False)
+            trip.user = request.user
+            trip.save()
+            return redirect('/trip')  
+        return render(request, 'addTrip.html', {'form': form})
 
