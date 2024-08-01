@@ -32,12 +32,16 @@ class Trip(models.Model):
                 raise ValidationError('Start date is required')
             if not self.end_date:
                 raise ValidationError('End date is required')
+            
+    def number_of_days(self):
+        return (self.end_date - self.start_date).days + 1
 
 
 class Itinerary(models.Model):
     name = models.CharField(max_length=255)
-    location = models.CharField(max_length=255)
     trip = models.ForeignKey(Trip, on_delete=models.CASCADE, related_name="itineraries")
+    day = models.IntegerField(default=1)
 
     def __str__(self):
-        return f"{self.name} - {self.location}"
+        return f"{self.name} on Day {self.day} of {self.trip.name}"
+
