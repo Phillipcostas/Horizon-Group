@@ -48,8 +48,8 @@ class Login(LoginView):
     template_name = 'login.html'
 
 
-class Trip(LoginView):
-    template_name = "trip.html"
+# class Trip(LoginView):
+#     template_name = "trip.html"
 
 class AddTrip(LoginRequiredMixin, View):
     def get(self, request):
