@@ -46,9 +46,17 @@ class Itinerary(models.Model):
         return f"{self.name} on Day {self.day} of {self.trip.name}"
 
 class SuitcaseItem(models.Model):
+    CATEGORY_CHOICES = [
+        ('Essentials', 'Essentials'),
+        ('Toiletries', 'Toiletries'),
+        ('Speciality Clothes', 'Speciality Clothes'),
+        ('Lounge Wear', 'Lounge Wear'),
+    ]
+
     user = models.ForeignKey(User, on_delete=models.CASCADE)
     name = models.CharField(max_length=100)
     packed = models.BooleanField(default=False)
+    category = models.CharField(max_length=50, choices=CATEGORY_CHOICES, default="some-string")
 
     def __str__(self):
         return self.name

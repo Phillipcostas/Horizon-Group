@@ -46,7 +46,8 @@ class TripForm(forms.ModelForm):
 class SuitcaseItemForm(forms.ModelForm):
     class Meta:
         model = SuitcaseItem
-        fields = ['name']
+        fields = ['name', 'category']
         widgets = {
             'name': forms.TextInput(attrs={'placeholder': 'Item name'}),
+            'category': forms.Select(attrs={'class': 'form-control'}),
         }

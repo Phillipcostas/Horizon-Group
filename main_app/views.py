@@ -54,9 +54,12 @@ def suitcase_view(request):
         form = SuitcaseItemForm()
 
     items = SuitcaseItem.objects.filter(user=request.user)
-    context = {'form': form, 'items': items}
+    categories = ['Essentials', 'Toiletries', 'Speciality Clothes', 'Lounge Wear']
+    categorized_items = {category: items.filter(category=category) for category in categories}
+    context = {'form': form, 'categorized_items': categorized_items}
     return render(request, 'suitcase.html', context)
 
+@login_required
 def remove_suitcase_item(request, pk):
     item = get_object_or_404(SuitcaseItem, pk=pk, user=request.user)
     item.delete()
