@@ -47,13 +47,6 @@ class Home(LoginView):
 class Login(LoginView):
     template_name = 'login.html'
 
-
-<<<<<<< HEAD
-=======
-# class Trip(LoginView):
-#     template_name = "trip.html"
-
->>>>>>> abc1288f39d8268f08b5e0340e3cfb8561bcec6c
 class AddTrip(LoginRequiredMixin, View):
     def get(self, request):
         form = TripForm()
@@ -71,7 +64,7 @@ class AddTrip(LoginRequiredMixin, View):
 class TripListView(LoginRequiredMixin, View):
     def get(self, request):
         trips = Trip.objects.filter(user=request.user)
-        return render(request, 'trip_list.html', {'trips': trips})
+        return render(request, 'trip.html', {'trips': trips})
     
 class TripDetailView(LoginRequiredMixin, View):
     def get(self, request, pk):
