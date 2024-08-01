@@ -1,0 +1,15 @@
+{% extends 'base.html' %}
+
+{% block title %}Trip Details{% endblock %}
+
+{% block content %}
+<div class="jumbotron">
+    <h1 class="display-4">{{ trip.name }}</h1>
+    <form method="post">
+        {% csrf_token %}
+        {{ form.as_p }}
+        <button type="submit" name="save" class="btn btn-primary">Save</button>
+        <button type="submit" name="delete" class="btn btn-danger">Delete</button>
+    </form>
+</div>
+{% endblock %}

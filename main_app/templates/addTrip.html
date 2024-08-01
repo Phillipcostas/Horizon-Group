@@ -4,7 +4,13 @@
 
 {% block content %}
 <div class="jumbotron">
-  <h1 class="display-4">Welcome to addTrip</h1>
-  <p class="lead">This is the addTrip page.</p>
+  <h1 class="display-4">Welcome to Add Trip</h1>
+  <p class="lead">This is the Add Trip page.</p>
+  <h1 class="display-4">Add a New Trip</h1>
+  <form method="post">
+    {% csrf_token %}
+    {{ form.as_p }}
+    <button type="submit" class="btn btn-primary">Add Trip</button>
+  </form>
 </div>
 {% endblock %}
