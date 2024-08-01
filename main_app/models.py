@@ -1,3 +1,4 @@
+from django.contrib.auth.tokens import datetime
 from django.db import models
 from django.contrib.auth.models import User
 from django.core.exceptions import ValidationError
@@ -15,7 +16,7 @@ class UserProfile(models.Model):
 class Trip(models.Model):
     name = models.CharField(max_length=255)
     user = models.ForeignKey(User, on_delete=models.CASCADE, related_name="trips")
-    location = models.CharField(max_length=255, default="Unknown Location")
+    location = models.CharField(max_length=255, default="")
     start_date = models.DateField(default=date.today)
     end_date = models.DateField(default=date.today)
 
