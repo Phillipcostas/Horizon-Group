@@ -62,10 +62,6 @@ class Home(LoginRequiredMixin, LoginView):
 class Login(LoginView):
     template_name = 'login.html'
 
-
-# class Trip(LoginView):
-#     template_name = "trip.html"
-
 class AddTrip(LoginRequiredMixin, View):
     def get(self, request):
         form = TripForm()
@@ -88,19 +84,22 @@ class TripListView(LoginRequiredMixin, View):
 class TripDetailView(LoginRequiredMixin, View):
     def get(self, request, pk):
         trip = get_object_or_404(Trip, pk=pk, user=request.user)
-        form = TripForm(instance=trip)
-        return render(request, 'trip_detail.html', {'form': form, 'trip': trip})
+        num_days = trip.number_of_days()
+        itineraries_by_day = {}
+        for day in range(1, num_days + 1):
+            itineraries_by_day[day] = list(Itinerary.objects.filter(trip=trip, day=day))
+        return render(request, 'trip_detail.html', {'trip': trip, 'num_days': num_days, 'itineraries_by_day': itineraries_by_day})
 
-    def post(self, request, pk):
+
+class AddItinerary(LoginRequiredMixin, View):
+    def post(self, request, pk, day):
         trip = get_object_or_404(Trip, pk=pk, user=request.user)
-        if 'save' in request.POST:
-            form = TripForm(request.POST, instance=trip)
-            if form.is_valid():
-                form.save()
-                return redirect('trip_detail', pk=pk)
-        elif 'delete' in request.POST:
-            trip.delete()
-            return redirect('trip_list')
+        itinerary_name = request.POST.get('itinerary_name')
+        if itinerary_name:
+            Itinerary.objects.create(trip=trip, day=day, name=itinerary_name)
+            print(f"Added itinerary: {itinerary_name} to day: {day}")  # Debugging line
         else:
-            form = TripForm(instance=trip)
-        return render(request, 'trip_detail.html', {'form': form, 'trip': trip})
+            print("Itinerary name is empty")  # Debugging line
+        return redirect('trip_detail', pk=pk)
+    
+# class ItineraryView()
