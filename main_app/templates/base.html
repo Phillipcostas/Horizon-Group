@@ -4,56 +4,40 @@
   <meta charset="UTF-8" />
   <meta http-equiv="X-UA-Compatible" content="IE=edge" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <link rel="shortcut icon" type="image/png" href="" />
-  <title>{% block title %}Horizon{% endblock %}</title>
+  <link rel="shortcut icon" type="image/png" href="jasdhakj" />
+  <title>{% block title %}{% endblock %}</title>
   {% load bootstrap5 %}
   {% bootstrap_css %}
   {% bootstrap_javascript %}
 </head>
 <body>
-  <nav class="navbar navbar-expand-lg navbar-light bg-info">
-    <div class="container-fluid">
-      <a class="navbar-brand link-light" href="{% url 'home' %}">Horizon</a>
-      <div class="collapse navbar-collapse" id="navbarNav">
-        <ul class="navbar-nav">
-        
-          {% if user.is_authenticated %}
+  <title>horizon</title>
 
-          <li class="nav-item">
-            <a class="nav-link link-light" href="{% url 'map' %}">Map</a>
+<div class="container">
+  <ul class="nav bg-info">
 
-            <li class="nav-item">
-              <a class="nav-link link-light" href="{% url 'trip' %}">Trip</a>
+    <li class="nav-item">
+      <a class="nav-link link-light" href="/home">HOME</a>
 
-            <li class="nav-item">
-              <a class="nav-link link-light" href="{% url 'addTrip' %}">Add Trip</a>
+      <li class="nav-item">
+        <a class="nav-link link-light" href="/base">About</a>
+    </li>
 
-          <li class="nav-item">  
-            <a class="nav-link link-light" href="{% url 'logout' %}">Log Out</a>
-            <form id="logout-form" method="post" action="{% url 'logout' %}" style="display: none;">
-              {% csrf_token %}
-            </form>
+    <li class="nav-item">
+      <a class="nav-link link-light" href="{% url 'signup' %}">Sign Up</a>
+  </li>
 
-            {% else %}
+    <li class="nav-item">
+      <a class="nav-link link-light" href="/">Log Out</a>
+        <form id="logout-form" method="post" action="{% url 'logout' %}">
+           {% csrf_token %}
+        </form>
+    
+  </ul>
 
-            <li class="nav-item">
-              <a class="nav-link link-light" href="{% url 'signup' %}">Sign Up</a>
-            </li>
-            <li class="nav-item">
-              <a class="nav-link link-light" href="{% url 'login' %}">Sign In</a>
-
-              {% endif %}
-              
-            </li>
-          </li>
-        </ul>
-      </div>
-    </div>
-  </nav>
-
-  <div class="container">
-    {% block content %}
-    {% endblock %}
-  </div>
+</head>
+  {% block content %}
+  {% endblock %}
+</div>
 </body>
 </html>

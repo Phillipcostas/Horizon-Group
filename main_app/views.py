@@ -1,22 +1,19 @@
 from django.shortcuts import render, redirect
-
 from django.contrib.auth.views import LoginView
 from django.contrib.auth import login
 from django.contrib.auth.forms import UserCreationForm
 from django.contrib.auth.decorators import login_required
 from .models import UserProfile, Trip, Itinerary
+from django.conf import settings
 
 
 def about(request):
     return render(request, "base.html")
 
 
-def about(request):
-    return render(request, "map.html")
-
-
-def about(request):
-    return render(request, "trip.html")
+def map(request):
+    context = {"api_key": settings.GOOGLE_MAPS_API_KEY, "map_id": settings.MAP_ID}
+    return render(request, "map.html", context)
 
 
 def signup(request):
@@ -45,14 +42,9 @@ class LoginView(LoginView):
     template_name = "login.html"
 
 
-class Map(LoginView):
-    template_name = "map.html"
-
-
 class Trip(LoginView):
     template_name = "trip.html"
 
 
 class AddTrip(LoginView):
     template_name = "addTrip.html"
-
