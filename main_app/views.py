@@ -1,26 +1,26 @@
 from django.shortcuts import render, redirect, get_object_or_404
-
 from django.contrib.auth.views import LoginView
 from django.contrib.auth import login
 from django.contrib.auth.forms import UserCreationForm
 from django.contrib.auth.decorators import login_required
 from .models import UserProfile, Trip, Itinerary
+from django.conf import settings
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.views.generic import View
 from .froms import TripForm
-
 
 def about(request):
     return render(request, "base.html")
 
 
-def about(request):
-    return render(request, "map.html")
+def map(request):
+    context = {"api_key": settings.GOOGLE_MAPS_API_KEY, "map_id": settings.MAP_ID}
+    return render(request, "map.html", context)
 
 
-def about(request):
-    return render(request, "trip.html")
-
+def trip_index(request):
+    trips = Trip.objects.filter(user=request.user)
+    return render(request, 'trip.html', { 'trips': trips })
 
 def signup(request):
     error_message = ""
@@ -44,13 +44,12 @@ class Home(LoginView):
     template_name = "home.html"
 
 
-class LoginView(LoginView):
-    template_name = "login.html"
+class Login(LoginView):
+    template_name = 'login.html'
 
 
-class Map(LoginView):
-    template_name = "map.html"
-
+class Trip(LoginView):
+    template_name = "trip.html"
 
 class AddTrip(LoginRequiredMixin, View):
     def get(self, request):
