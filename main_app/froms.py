@@ -2,7 +2,7 @@
 from django import forms
 from django.contrib.auth.forms import UserCreationForm
 from django.contrib.auth.models import User
-from .models import Trip
+from .models import Trip, SuitcaseItem
 from django.conf import settings
 
 class SignUpForm(UserCreationForm):
@@ -43,3 +43,10 @@ class TripForm(forms.ModelForm):
             ),
         }
         
+class SuitcaseItemForm(forms.ModelForm):
+    class Meta:
+        model = SuitcaseItem
+        fields = ['name']
+        widgets = {
+            'name': forms.TextInput(attrs={'placeholder': 'Item name'}),
+        }
