@@ -8,7 +8,7 @@ from django.conf import settings
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.views.generic import View
 from .froms import TripForm
-
+from datetime import date, timedelta
 def about(request):
     return render(request, "base.html")
 
@@ -40,8 +40,23 @@ def signup(request):
     return render(request, "signup.html", context)
 
 
-class Home(LoginView):
-    template_name = "home.html"
+class Home(LoginRequiredMixin, LoginView):
+    def get(self, request):
+        upcoming_trips, other_trips = self.get_trips(request.user)
+        return render(request, 'home.html', {
+            'upcoming_trips': upcoming_trips,
+            'other_trips': other_trips,
+                                             
+        })
+    
+    def get_trips(self, user):
+        today = date.today()
+        ten_days_later = today + timedelta(days=10)
+        upcoming_trips = Trip.objects.filter(user=user, start_date__range=(today, ten_days_later))
+        other_trips = Trip.objects.filter(user=user).exclude(start_date__range=(today, ten_days_later))
+        return upcoming_trips, other_trips
+
+        
 
 
 class Login(LoginView):
