@@ -2,7 +2,7 @@
 from django import forms
 from django.contrib.auth.forms import UserCreationForm
 from django.contrib.auth.models import User
-from .models import Trip, SuitcaseItem
+from .models import Trip, SuitcaseItem, TripPhoto
 from django.conf import settings
 
 
@@ -25,10 +25,16 @@ class TripForm(forms.ModelForm):
         widget=forms.TextInput(attrs={"placeholder": "Where is your trip?"}),
         label="Location",
     )
+    class TripForm(forms.Form):
+        trip_photo = forms.ModelChoiceField(
+        queryset=TripPhoto.objects.all(),
+        label="Trip Photo"
+    )
+
 
     class Meta:
         model = Trip
-        fields = ["name", "location", "start_date", "end_date"]
+        fields = ["name", "location", "start_date", "end_date", "trip_photo"]
         widgets = {
             "start_date": forms.DateInput(
                 format=("%Y-%m-%d"),
