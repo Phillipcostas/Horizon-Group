@@ -3,7 +3,7 @@ from django.contrib.auth.views import LoginView
 from django.contrib.auth import login
 from django.contrib.auth.forms import UserCreationForm
 from django.contrib.auth.decorators import login_required
-from .models import UserProfile, Trip, Itinerary, SuitcaseItem
+from .models import UserProfile, Trip, Itinerary, SuitcaseItem, UserPhoto, TripPhoto
 from django.conf import settings
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.views.generic import View
@@ -93,13 +93,12 @@ class Home(LoginRequiredMixin, LoginView):
         other_trips = Trip.objects.filter(user=user).exclude(start_date__range=(today, ten_days_later))
         return upcoming_trips, other_trips
 
-        
-
 
 class Login(LoginView):
     template_name = 'login.html'
 
 class AddTrip(LoginRequiredMixin, View):
+    trip_photos = TripPhoto.objects.all
     def get(self, request):
         form = TripForm()
         return render(request, 'addTrip.html', {'form': form})
@@ -121,11 +120,14 @@ class TripListView(LoginRequiredMixin, View):
 class TripDetailView(LoginRequiredMixin, View):
     def get(self, request, pk):
         trip = get_object_or_404(Trip, pk=pk, user=request.user)
+        trip_photo_id = trip.trip_photo_id
+        trip_photo = TripPhoto.objects.filter(id = trip_photo_id)
+        photo = trip_photo[0] 
         num_days = trip.number_of_days()
         itineraries_by_day = {}
         for day in range(1, num_days + 1):
             itineraries_by_day[day] = list(Itinerary.objects.filter(trip=trip, day=day))
-        return render(request, 'trip_detail.html', {'trip': trip, 'num_days': num_days, 'itineraries_by_day': itineraries_by_day})
+        return render(request, 'trip_detail.html', {'trip': trip, 'num_days': num_days, 'itineraries_by_day': itineraries_by_day, 'photo': photo})
 
 
 class AddItinerary(LoginRequiredMixin, View):

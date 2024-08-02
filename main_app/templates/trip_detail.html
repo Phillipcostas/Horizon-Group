@@ -10,6 +10,7 @@
     <h2>Location: {{ trip.location }}</h2>
     <h3>From: {{ trip.start_date }} To: {{ trip.end_date }}</h3>
     <h4>Number of Days: {{ num_days }}</h4>
+    <img src="{{photo}}" alt="photo of a landscape" width='500' height="500">
     <div class="row">
         {% for day in num_days|to_range %}
         <div class="col-md-4">
