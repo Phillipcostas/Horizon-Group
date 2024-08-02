@@ -3,12 +3,14 @@ from django.contrib.auth.views import LoginView
 from django.contrib.auth import login
 from django.contrib.auth.forms import UserCreationForm
 from django.contrib.auth.decorators import login_required
-from .models import UserProfile, Trip, Itinerary
+from .models import UserProfile, Trip, Itinerary, SuitcaseItem
 from django.conf import settings
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.views.generic import View
-from .froms import TripForm
+from .froms import TripForm, SuitcaseItemForm
 from datetime import date, timedelta
+
+
 def about(request):
     return render(request, "base.html")
 
@@ -39,6 +41,29 @@ def signup(request):
     context = {"form": form, "error_message": error_message}
     return render(request, "signup.html", context)
 
+@login_required
+def suitcase_view(request):
+    if request.method == 'POST':
+        form = SuitcaseItemForm(request.POST)
+        if form.is_valid():
+            item = form.save(commit=False)
+            item.user = request.user
+            item.save()
+            return redirect('suitcase')
+    else:
+        form = SuitcaseItemForm()
+
+    items = SuitcaseItem.objects.filter(user=request.user)
+    categories = ['Essentials', 'Toiletries', 'Speciality Clothes', 'Lounge Wear']
+    categorized_items = {category: items.filter(category=category) for category in categories}
+    context = {'form': form, 'categorized_items': categorized_items}
+    return render(request, 'suitcase.html', context)
+
+@login_required
+def remove_suitcase_item(request, pk):
+    item = get_object_or_404(SuitcaseItem, pk=pk, user=request.user)
+    item.delete()
+    return redirect('suitcase')
 
 class Home(LoginRequiredMixin, LoginView):
     def get(self, request):
@@ -102,4 +127,3 @@ class AddItinerary(LoginRequiredMixin, View):
             print("Itinerary name is empty")  # Debugging line
         return redirect('trip_detail', pk=pk)
     
-# class ItineraryView()
