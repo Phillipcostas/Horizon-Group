@@ -5,7 +5,46 @@
 {% block content %}
 <div class="jumbotron">
   <h1 class="display-4">Welcome to Horizon</h1>
-  <p class="lead">This is the home page.</p>
+  <p class="lead">This is the Home Page.</p>
+</div>
+<div class="jumbotron">
+  <h1 class="display-4">Upcoming Trips</h1>
+  <div class="row">
+    {% for trip in upcoming_trips %}
+    <div class="col-md-4">
+      <div class="card mb-4 shadow-sm">
+        <div class="card-body">
+          <h5 class="card-title">{{ trip.name }}</h5>
+          <p class="card-text">
+            Location: {{ trip.location }}<br>
+            Start Date: {{ trip.start_date }}<br>
+            End Date: {{ trip.end_date }}
+          </p>
+          <a href="{% url 'trip_detail' trip.pk %}" class="btn btn-primary">View Details</a>
+        </div>
+      </div>
+    </div>
+    {% endfor %}
+  </div>
+  <h1 class="display-4">All Trips</h1>
+  <div class="row">
+    {% for trip in other_trips %}
+    <div class="col-md-4">
+      <div class="card mb-4 shadow-sm">
+        <div class="card-body">
+          <h5 class="card-title">{{ trip.name }}</h5>
+          <p class="card-text">
+            Location: {{ trip.location }}<br>
+            Start Date: {{ trip.start_date }}<br>
+            End Date: {{ trip.end_date }}
+          </p>
+          <a href="{% url 'trip_detail' trip.pk %}" class="btn btn-primary">View Details</a>
+        </div>
+      </div>
+    </div>
+    {% endfor %}
+  </div>
+</div>
 </div>
 
 {% if not user.is_authenticated %}

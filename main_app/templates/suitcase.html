@@ -1,0 +1,61 @@
+{% extends 'base.html' %}
+
+{% block title %}Suitcase{% endblock %}
+
+{% block content %}
+<div class="container">
+  <h1 class="display-4">Your Suitcase</h1>
+  <form method="post">
+    {% csrf_token %}
+    {{ form.as_p }}
+    <button type="submit" class="btn btn-primary">Add Item</button>
+  </form>
+
+  <div class="row">
+    {% for category, items in categorized_items.items %}
+      <div class="col-md-6 mb-4">
+        <h2>{{ category }}</h2>
+        <ul class="list-group">
+          {% for item in items %}
+            <li class="list-group-item d-flex justify-content-between align-items-center suitcase-item">
+              <form method="post" action="{% url 'toggle_packed_status' item.pk %}" class="d-flex align-items-center w-100">
+                {% csrf_token %}
+                <span class="item-name">{{ item.name }}</span>
+                <input type="checkbox" name="packed" class="ml-auto" onchange="this.form.submit()" {% if item.packed %}checked{% endif %}>
+                <span class="ml-2">packed</span>
+              </form>
+              <form method="post" action="{% url 'remove_suitcase_item' item.pk %}" class="ml-2">
+                {% csrf_token %}
+                <button type="submit" class="btn btn-danger btn-sm">Remove</button>
+              </form>
+            </li>
+          {% empty %}
+            <li class="list-group-item">No items in this category</li>
+          {% endfor %}
+        </ul>
+      </div>
+    {% endfor %}
+  </div>
+</div>
+
+<style>
+  .suitcase-header {
+    padding: 2rem 1rem;
+    background: #f8f9fa;
+    border-bottom: 1px solid #e9ecef;
+  }
+  .suitcase-item {
+    border: 1px solid #e9ecef;
+    padding: 1rem;
+    margin-bottom: 1rem;
+    border-radius: 0.25rem;
+  }
+  .item-name {
+    margin-right: 20px;
+    flex-grow: 1;
+  }
+  .ml-auto {
+    margin-left: auto;
+  }
+</style>
+{% endblock %}

@@ -1,10 +1,46 @@
 {% extends 'base.html' %}
 
-{% block title %}Trip{% endblock %}
+{% block title %}Your Trips{% endblock %}
 
 {% block content %}
 <div class="jumbotron">
-  <h1 class="display-4">Welcome to your trip</h1>
-  <p class="lead">This is the trip page.</p>
+  <h1 class="display-4">Your Trips</h1>
+  <div class="row">
+    {% for trip in trips %}
+    <div class="col-md-4">
+      <div class="card mb-4 shadow-sm">
+        <div class="card-body">
+          <h5 class="card-title">{{ trip.name }}</h5>
+          <p class="card-text">
+            Location: {{ trip.location }}<br>
+            Start Date: {{ trip.start_date }}<br>
+            End Date: {{ trip.end_date }}
+          </p>
+          <a href="{% url 'trip_detail' trip.pk %}" class="btn btn-primary">View Details</a>
+        </div>
+      </div>
+    </div>
+    {% endfor %}
+  </div>
+  <h1 class="display-4">All Trips</h1>
+  <div class="row">
+    {% for trip in other_trips %}
+    <div class="col-md-4">
+      <div class="card mb-4 shadow-sm">
+        <div class="card-body">
+          <h5 class="card-title">{{ trip.name }}</h5>
+          <p class="card-text">
+            Location: {{ trip.location }}<br>
+            Start Date: {{ trip.start_date }}<br>
+            End Date: {{ trip.end_date }}
+          </p>
+          <a href="{% url 'trip_detail' trip.pk %}" class="btn btn-primary">View Details</a>
+        </div>
+      </div>
+    </div>
+    {% endfor %}
+  </div>
 </div>
+
+
 {% endblock %}
