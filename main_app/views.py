@@ -3,12 +3,16 @@ from django.contrib.auth.views import LoginView
 from django.contrib.auth import login
 from django.contrib.auth.forms import UserCreationForm
 from django.contrib.auth.decorators import login_required
-from .models import UserProfile, Trip, Itinerary
+from .models import UserProfile, Trip, Itinerary, SuitcaseItem, UserPhoto, TripPhoto
 from django.conf import settings
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.views.generic import View
-from .froms import TripForm
+from .froms import TripForm, SuitcaseItemForm
 from datetime import date, timedelta
+from collections import defaultdict
+
+
+
 def about(request):
     return render(request, "base.html")
 
@@ -39,6 +43,42 @@ def signup(request):
     context = {"form": form, "error_message": error_message}
     return render(request, "signup.html", context)
 
+@login_required
+def suitcase_view(request):
+    if request.method == 'POST':
+        form = SuitcaseItemForm(request.POST)
+        if form.is_valid():
+            item = form.save(commit=False)
+            item.user = request.user
+            item.save()
+            # checkbox_value = form.cleaned_data['my_checkbox']
+
+            return redirect('suitcase')
+    else:
+        form = SuitcaseItemForm()
+
+    items = SuitcaseItem.objects.filter(user=request.user)
+    categories = ['Essentials', 'Toiletries', 'Speciality Clothes', 'Lounge Wear']
+    categorized_items = {category: items.filter(category=category) for category in categories}
+    context = {'form': form, 'categorized_items': categorized_items}
+    return render(request, 'suitcase.html', context)
+
+@login_required
+def remove_suitcase_item(request, pk):
+    item = get_object_or_404(SuitcaseItem, pk=pk, user=request.user)
+    item.delete()
+    return redirect('suitcase')
+
+@login_required
+def toggle_packed_status(request, pk):
+    item = get_object_or_404(SuitcaseItem, pk=pk, user=request.user)
+    if 'packed' in request.POST:
+        item.packed = not item.packed
+    if 'quantity' in request.POST:
+        item.quantity = request.POST.get('quantity')
+    item.save()
+    return redirect('suitcase')
+
 
 class Home(LoginRequiredMixin, LoginView):
     def get(self, request):
@@ -56,13 +96,12 @@ class Home(LoginRequiredMixin, LoginView):
         other_trips = Trip.objects.filter(user=user).exclude(start_date__range=(today, ten_days_later))
         return upcoming_trips, other_trips
 
-        
-
 
 class Login(LoginView):
     template_name = 'login.html'
 
 class AddTrip(LoginRequiredMixin, View):
+    trip_photos = TripPhoto.objects.all
     def get(self, request):
         form = TripForm()
         return render(request, 'addTrip.html', {'form': form})
@@ -84,11 +123,14 @@ class TripListView(LoginRequiredMixin, View):
 class TripDetailView(LoginRequiredMixin, View):
     def get(self, request, pk):
         trip = get_object_or_404(Trip, pk=pk, user=request.user)
+        trip_photo_id = trip.trip_photo_id
+        trip_photo = TripPhoto.objects.filter(id = trip_photo_id)
+        photo = trip_photo[0] 
         num_days = trip.number_of_days()
         itineraries_by_day = {}
         for day in range(1, num_days + 1):
             itineraries_by_day[day] = list(Itinerary.objects.filter(trip=trip, day=day))
-        return render(request, 'trip_detail.html', {'trip': trip, 'num_days': num_days, 'itineraries_by_day': itineraries_by_day})
+        return render(request, 'trip_detail.html', {'trip': trip, 'num_days': num_days, 'itineraries_by_day': itineraries_by_day, 'photo': photo})
 
 
 class AddItinerary(LoginRequiredMixin, View):
@@ -102,4 +144,3 @@ class AddItinerary(LoginRequiredMixin, View):
             print("Itinerary name is empty")  # Debugging line
         return redirect('trip_detail', pk=pk)
     
-# class ItineraryView()

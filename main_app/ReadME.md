@@ -17,3 +17,5 @@ GitHub Protocols
         - git branch (feature-name)
         - git checkout (feature-name)
         - git merge main 
+
+    - Pull MAIN BRANCH DOWN INTO YOURS BEFORE YOU PUSH!!!!!
