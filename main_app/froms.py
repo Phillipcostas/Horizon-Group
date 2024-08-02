@@ -54,6 +54,7 @@ class SuitcaseItemForm(forms.ModelForm):
         widgets = {
             'name': forms.TextInput(attrs={'placeholder': 'Item name'}),
             'category': forms.Select(attrs={'class': 'form-control'}),
+            'quantity': forms.NumberInput(attrs={'min': 1}),
             'packed': forms.CheckboxInput(attrs={'class': 'form-check-input'}),
 
         
