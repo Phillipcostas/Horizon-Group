@@ -75,3 +75,32 @@ class SuitcaseItem(models.Model):
     def __str__(self):
         return self.name
 
+class UserInterest(models.Model):
+    QUESTION_1_CHOICES = [
+        ('option_1', 'Option 1'),
+        ('option_2', 'Option 2'),
+        ('option_3', 'Option 3'),
+        ('option_4', 'Option 4'),
+    ]
+    QUESTION_2_CHOICES = [
+        ('option_1', 'Option 1'),
+        ('option_2', 'Option 2'),
+        ('option_3', 'Option 3'),
+        ('option_4', 'Option 4'),
+    ]
+    QUESTION_3_CHOICES = [
+        ('option_1', 'Option 1'),
+        ('option_2', 'Option 2'),
+        ('option_3', 'Option 3'),
+        ('option_4', 'Option 4'),
+    ]
+    QUESTION_4_CHOICES = [
+        ('option_1', 'Option 1'),
+        ('option_2', 'Option 2'),
+        ('option_3', 'Option 3'),
+        ('option_4', 'Option 4'),
+    ]
+    question_1 = models.CharField(max_length=255, choices=QUESTION_1_CHOICES, default='option_1', blank=False)
+    question_2 = models.CharField(max_length=255, choices=QUESTION_2_CHOICES, default='option_1', blank=False)
+    question_3 = models.CharField(max_length=255, choices=QUESTION_3_CHOICES, default='option_1', blank=False)
+    question_4 = models.CharField(max_length=255, choices=QUESTION_4_CHOICES, default='option_1', blank=False)

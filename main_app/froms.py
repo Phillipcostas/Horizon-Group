@@ -2,7 +2,7 @@
 from django import forms
 from django.contrib.auth.forms import UserCreationForm
 from django.contrib.auth.models import User
-from .models import Trip, SuitcaseItem, TripPhoto
+from .models import Trip, SuitcaseItem, TripPhoto, UserInterest
 from django.conf import settings
 
 
@@ -10,7 +10,10 @@ class SignUpForm(UserCreationForm):
     email = forms.EmailField(
         max_length=254, help_text="Required. Enter a valid email address."
     )
-
+    profile_photo = trip_photo = forms.ModelChoiceField(
+        queryset=TripPhoto.objects.all(),
+        label="Trip Photo"
+    )
     class Meta:
         model = User
         fields = ("username", "email", "password1", "password2")
@@ -57,4 +60,12 @@ class SuitcaseItemForm(forms.ModelForm):
             'category': forms.Select(attrs={'class': 'form-control'}),
             'packed': forms.CheckboxInput(attrs={'class': 'form-check-input'}),
 
+        }
+
+class UserInterestForm(forms.ModelForm):
+    class Meta:
+        model = UserInterest
+        fields = ['question_1', 'question_2', 'question_3', 'question_4']
+        widgets = {
+            'question_1': forms.Select(attrs={'class': 'form-control'})
         }
