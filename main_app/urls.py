@@ -16,5 +16,6 @@ urlpatterns = [
     path("accounts/login/", views.Login.as_view(), name="login"),
     path('suitcase/', views.suitcase_view, name='suitcase'),
     path('suitcase/remove/<int:pk>/', views.remove_suitcase_item, name='remove_suitcase_item'),
+    path('suitcase/toggle/<int:pk>/', views.toggle_packed_status, name='toggle_packed_status'),
 
 ]
