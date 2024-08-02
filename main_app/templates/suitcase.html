@@ -3,13 +3,31 @@
 {% block title %}Suitcase{% endblock %}
 
 {% block content %}
-<div class="container">
-  <h1 class="display-4">Your Suitcase</h1>
-  <form method="post">
+<div class="container mt-5">
+  <h1 class="display-4 text-center mb-4">Your Suitcase</h1>
+  <form method="post" class="mb-5">
     {% csrf_token %}
-    {{ form.as_p }}
-    <button type="submit" class="btn btn-primary">Add Item</button>
+    <div class="form-row align-items-end">
+      <div class="col">
+        {{ form.category.label_tag }}
+        {{ form.category }}
+      </div>
+    </br>
+      <div class="col">
+        {{ form.name.label_tag }}
+        {{ form.name }}
+      </div>
+    </br>
+      <div class="col">
+        {{ form.quantity.label_tag }}
+        {{ form.quantity }}
+      </div>
+      <div class="col-auto">
+        <button type="submit" class="btn btn-primary">Add Item</button>
+      </div>
+    </div>
   </form>
+
 
   <div class="row mt-4">
     {% for category, items in categorized_items.items %}
