@@ -2,7 +2,7 @@
 from django import forms
 from django.contrib.auth.forms import UserCreationForm
 from django.contrib.auth.models import User
-from .models import Trip
+from .models import Trip, SuitcaseItem
 from django.conf import settings
 
 class SignUpForm(UserCreationForm):
@@ -22,18 +22,32 @@ class TripForm(forms.ModelForm):
         widget=forms.TextInput(attrs={'placeholder': 'Where is your trip?'}),
         label='Location'
     )
-    start_date = forms.DateField(
-        widget=forms.DateInput(attrs={'placeholder': 'MM-DD-YYYY', 'type': 'text'}),
-        label='Start Date',
-        input_formats=['%m-%d-%Y']
-    )
-    end_date = forms.DateField(
-        widget=forms.DateInput(attrs={'placeholder': 'MM-DD-YYYY', 'type': 'text'}),
-        label='End Date',
-        input_formats=['%m-%d-%Y']
-    )
 
     class Meta:
         model = Trip
         fields = ['name', 'location', 'start_date', 'end_date']
+        widgets = {
+            'start_date': forms.DateInput(
+                format=('%Y-%m-%d'),
+                attrs={
+                    'placeholder': 'Select a start date',
+                    'type': 'date'
+                }
+            ),
+            'end_date': forms.DateInput(
+                format=('%Y-%m-%d'),
+                attrs={
+                    'placeholder': 'Select an end date',
+                    'type': 'date'
+                }
+            ),
+        }
         
+class SuitcaseItemForm(forms.ModelForm):
+    class Meta:
+        model = SuitcaseItem
+        fields = ['name', 'category']
+        widgets = {
+            'name': forms.TextInput(attrs={'placeholder': 'Item name'}),
+            'category': forms.Select(attrs={'class': 'form-control'}),
+        }

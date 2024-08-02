@@ -32,12 +32,31 @@ class Trip(models.Model):
                 raise ValidationError('Start date is required')
             if not self.end_date:
                 raise ValidationError('End date is required')
+            
+    def number_of_days(self):
+        return (self.end_date - self.start_date).days + 1
 
 
 class Itinerary(models.Model):
     name = models.CharField(max_length=255)
-    location = models.CharField(max_length=255)
     trip = models.ForeignKey(Trip, on_delete=models.CASCADE, related_name="itineraries")
+    day = models.IntegerField(default=1)
 
     def __str__(self):
-        return f"{self.name} - {self.location}"
+        return f"{self.name} on Day {self.day} of {self.trip.name}"
+
+class SuitcaseItem(models.Model):
+    CATEGORY_CHOICES = [
+        ('Essentials', 'Essentials'),
+        ('Toiletries', 'Toiletries'),
+        ('Speciality Clothes', 'Speciality Clothes'),
+        ('Lounge Wear', 'Lounge Wear'),
+    ]
+
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
+    name = models.CharField(max_length=100)
+    packed = models.BooleanField(default=False)
+    category = models.CharField(max_length=50, choices=CATEGORY_CHOICES, default="some-string")
+
+    def __str__(self):
+        return self.name

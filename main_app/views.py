@@ -3,11 +3,13 @@ from django.contrib.auth.views import LoginView
 from django.contrib.auth import login
 from django.contrib.auth.forms import UserCreationForm
 from django.contrib.auth.decorators import login_required
-from .models import UserProfile, Trip, Itinerary
+from .models import UserProfile, Trip, Itinerary, SuitcaseItem
 from django.conf import settings
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.views.generic import View
-from .froms import TripForm
+from .froms import TripForm, SuitcaseItemForm
+from datetime import date, timedelta
+
 
 def about(request):
     return render(request, "base.html")
@@ -39,17 +41,51 @@ def signup(request):
     context = {"form": form, "error_message": error_message}
     return render(request, "signup.html", context)
 
+@login_required
+def suitcase_view(request):
+    if request.method == 'POST':
+        form = SuitcaseItemForm(request.POST)
+        if form.is_valid():
+            item = form.save(commit=False)
+            item.user = request.user
+            item.save()
+            return redirect('suitcase')
+    else:
+        form = SuitcaseItemForm()
 
-class Home(LoginView):
-    template_name = "home.html"
+    items = SuitcaseItem.objects.filter(user=request.user)
+    categories = ['Essentials', 'Toiletries', 'Speciality Clothes', 'Lounge Wear']
+    categorized_items = {category: items.filter(category=category) for category in categories}
+    context = {'form': form, 'categorized_items': categorized_items}
+    return render(request, 'suitcase.html', context)
+
+@login_required
+def remove_suitcase_item(request, pk):
+    item = get_object_or_404(SuitcaseItem, pk=pk, user=request.user)
+    item.delete()
+    return redirect('suitcase')
+
+class Home(LoginRequiredMixin, LoginView):
+    def get(self, request):
+        upcoming_trips, other_trips = self.get_trips(request.user)
+        return render(request, 'home.html', {
+            'upcoming_trips': upcoming_trips,
+            'other_trips': other_trips,
+                                             
+        })
+    
+    def get_trips(self, user):
+        today = date.today()
+        ten_days_later = today + timedelta(days=10)
+        upcoming_trips = Trip.objects.filter(user=user, start_date__range=(today, ten_days_later))
+        other_trips = Trip.objects.filter(user=user).exclude(start_date__range=(today, ten_days_later))
+        return upcoming_trips, other_trips
+
+        
 
 
 class Login(LoginView):
     template_name = 'login.html'
-
-
-# class Trip(LoginView):
-#     template_name = "trip.html"
 
 class AddTrip(LoginRequiredMixin, View):
     def get(self, request):
@@ -73,19 +109,21 @@ class TripListView(LoginRequiredMixin, View):
 class TripDetailView(LoginRequiredMixin, View):
     def get(self, request, pk):
         trip = get_object_or_404(Trip, pk=pk, user=request.user)
-        form = TripForm(instance=trip)
-        return render(request, 'trip_detail.html', {'form': form, 'trip': trip})
+        num_days = trip.number_of_days()
+        itineraries_by_day = {}
+        for day in range(1, num_days + 1):
+            itineraries_by_day[day] = list(Itinerary.objects.filter(trip=trip, day=day))
+        return render(request, 'trip_detail.html', {'trip': trip, 'num_days': num_days, 'itineraries_by_day': itineraries_by_day})
 
-    def post(self, request, pk):
+
+class AddItinerary(LoginRequiredMixin, View):
+    def post(self, request, pk, day):
         trip = get_object_or_404(Trip, pk=pk, user=request.user)
-        if 'save' in request.POST:
-            form = TripForm(request.POST, instance=trip)
-            if form.is_valid():
-                form.save()
-                return redirect('trip_detail', pk=pk)
-        elif 'delete' in request.POST:
-            trip.delete()
-            return redirect('trip_list')
+        itinerary_name = request.POST.get('itinerary_name')
+        if itinerary_name:
+            Itinerary.objects.create(trip=trip, day=day, name=itinerary_name)
+            print(f"Added itinerary: {itinerary_name} to day: {day}")  # Debugging line
         else:
-            form = TripForm(instance=trip)
-        return render(request, 'trip_detail.html', {'form': form, 'trip': trip})
+            print("Itinerary name is empty")  # Debugging line
+        return redirect('trip_detail', pk=pk)
+    
