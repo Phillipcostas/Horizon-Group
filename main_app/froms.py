@@ -2,7 +2,7 @@
 from django import forms
 from django.contrib.auth.forms import UserCreationForm
 from django.contrib.auth.models import User
-from .models import Trip, SuitcaseItem, TripPhoto
+from .models import Trip, SuitcaseItem, TripPhoto, UserInterest, UserPhoto, UserProfile
 from django.conf import settings
 
 
@@ -58,3 +58,21 @@ class SuitcaseItemForm(forms.ModelForm):
             'packed': forms.CheckboxInput(attrs={'class': 'form-check-input'}),
 
         }
+
+class UserInterestForm(forms.ModelForm):
+    # class UserProfile(forms.ModelForm):
+    #     profile_photo = forms.ModelChoiceField(
+    #     queryset=UserPhoto.objects.all(),
+    #     label="Profile Photo"
+    # )
+    class Meta:
+        model = UserInterest
+        fields = ['color']
+        widgets = {
+            'color': forms.Select(attrs={'class': 'form-control'}),
+            # 'question_1': forms.Select(attrs={'class': 'form-control'}),
+            # 'question_1': forms.Select(attrs={'class': 'form-control'}),
+            # 'question_1': forms.Select(attrs={'class': 'form-control'})
+        }
+
+    

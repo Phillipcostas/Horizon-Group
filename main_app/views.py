@@ -3,11 +3,11 @@ from django.contrib.auth.views import LoginView
 from django.contrib.auth import login
 from django.contrib.auth.forms import UserCreationForm
 from django.contrib.auth.decorators import login_required
-from .models import UserProfile, Trip, Itinerary, SuitcaseItem, UserPhoto, TripPhoto
+from .models import UserProfile, Trip, Itinerary, SuitcaseItem, UserPhoto, TripPhoto, UserInterest
 from django.conf import settings
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.views.generic import View
-from .froms import TripForm, SuitcaseItemForm
+from .froms import TripForm, SuitcaseItemForm, UserInterestForm
 from datetime import date, timedelta
 from collections import defaultdict
 
@@ -26,6 +26,23 @@ def trip_index(request):
     trips = Trip.objects.filter(user=request.user)
     return render(request, 'trip.html', { 'trips': trips })
 
+
+def user_interest(request):
+    error_message = ""
+    if request.method == "POST":
+        form = UserInterestForm(request.POST)
+        if form.is_valid():
+            print (form.cleaned_data['interest1'])
+    else:
+        form = UserInterestForm()
+    context = {"form": form, "error_message": error_message}
+    return render(request, "registration/interestQuestions.html", context)
+
+
+        
+
+
+
 def signup(request):
     error_message = ""
     if request.method == "POST":
@@ -35,7 +52,7 @@ def signup(request):
             login(request, user)
             userProfile = UserProfile.objects.create(user=user, name=user.username)
             userProfile.save()
-            return redirect("home")
+            return redirect("interestQuestions.html")
         else:
             error_message = "Invalid sign up - try again"
     else:
