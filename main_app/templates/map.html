@@ -11,9 +11,9 @@
   </div>
   <div id="map" style="width: 400px; height: 400px;"></div>
   <script>
-    let map; // Declare map as a global variable
-    let userLocation; // Declare userLocation as a global variable
-    let markers = []; // Array to store all markers
+    let map; 
+    let userLocation;
+    let markers = [];
 
     async function initMap() {
       const mapId = "{{ map_id|escapejs }}";
