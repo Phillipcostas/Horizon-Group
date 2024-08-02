@@ -9,6 +9,8 @@ from django.contrib.auth.mixins import LoginRequiredMixin
 from django.views.generic import View
 from .froms import TripForm, SuitcaseItemForm
 from datetime import date, timedelta
+from collections import defaultdict
+
 
 
 def about(request):
@@ -49,6 +51,8 @@ def suitcase_view(request):
             item = form.save(commit=False)
             item.user = request.user
             item.save()
+            # checkbox_value = form.cleaned_data['my_checkbox']
+
             return redirect('suitcase')
     else:
         form = SuitcaseItemForm()
@@ -63,6 +67,14 @@ def suitcase_view(request):
 def remove_suitcase_item(request, pk):
     item = get_object_or_404(SuitcaseItem, pk=pk, user=request.user)
     item.delete()
+    return redirect('suitcase')
+
+@login_required
+def toggle_packed_status(request, pk):
+    item = get_object_or_404(SuitcaseItem, pk=pk, user=request.user)
+    if request.method == 'POST':
+        item.packed = not item.packed
+        item.save()
     return redirect('suitcase')
 
 class Home(LoginRequiredMixin, LoginView):

@@ -47,7 +47,10 @@ class SuitcaseItemForm(forms.ModelForm):
     class Meta:
         model = SuitcaseItem
         fields = ['name', 'category']
+        accept_terms = forms.BooleanField(label="Packed")
         widgets = {
             'name': forms.TextInput(attrs={'placeholder': 'Item name'}),
             'category': forms.Select(attrs={'class': 'form-control'}),
+            'packed': forms.CheckboxInput(attrs={'class': 'form-check-input'}),
+
         }

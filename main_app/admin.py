@@ -6,3 +6,4 @@ from .models import UserProfile, Itinerary, Trip
 admin.site.register(UserProfile)
 admin.site.register(Itinerary)
 admin.site.register(Trip)
+
