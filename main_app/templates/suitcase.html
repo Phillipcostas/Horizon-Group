@@ -21,6 +21,9 @@
               <form method="post" action="{% url 'toggle_packed_status' item.pk %}" class="d-flex align-items-center w-100">
                 {% csrf_token %}
                 <span class="item-name">{{ item.name }}</span>
+                <span class="quantity">
+                  <input type="number" name="quantity" value="{{ item.quantity }}" min="1" class="form-control form-control-sm d-inline-block w-auto" onchange="this.form.submit()">
+                </span>
                 <input type="checkbox" name="packed" class="ml-auto" onchange="this.form.submit()" {% if item.packed %}checked{% endif %}>
                 <span class="ml-2">packed</span>
               </form>

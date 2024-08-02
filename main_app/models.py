@@ -69,6 +69,7 @@ class SuitcaseItem(models.Model):
 
     user = models.ForeignKey(User, on_delete=models.CASCADE)
     name = models.CharField(max_length=100)
+    quantity = models.IntegerField(default=1)  # New field
     packed = models.BooleanField(default=False)
     category = models.CharField(max_length=50, choices=CATEGORY_CHOICES, default="some-string")
 
