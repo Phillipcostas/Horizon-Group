@@ -1,21 +1,30 @@
 {% extends 'base.html' %}
+{% load static %}
 
 {% block title %}Sign Up{% endblock %}
 
 {% block content %}
-<div class="row justify-content-center">
-  <div class="col-md-6">
-    <h2 class="text-center">Sign Up</h2>
-    {% if error_message %}
-    <div class="alert alert-danger" role="alert">
-      {{ error_message }}
+<div class="container-fluid vh-100" style="background-image: url('{% static 'images/login-background.jpeg' %}'); background-size: cover; background-position: center;">
+  <div class="row h-100 justify-content-center align-items-center">
+    <div class="col-md-4 col-sm-8">
+      <div class="card h-75"> 
+        <div class="card-body">
+          <h2 class="text-center">Sign Up</h2>
+          {% if error_message %}
+          <div class="alert alert-danger" role="alert">
+            {{ error_message }}
+          </div>
+          {% endif %}
+          <form method="post">
+            {% csrf_token %}
+            {{ form.as_p }}
+            <button type="submit" class="btn btn-yellow w-100">Sign Up</button> <!-- 修改按钮的类为 btn-yellow -->
+          </form>
+        </div>
+      </div>
     </div>
-    {% endif %}
-    <form method="post">
-      {% csrf_token %}
-      {{ form.as_p }}
-      <button type="submit" class="btn btn-primary">Sign Up</button>
-    </form>
   </div>
 </div>
 {% endblock %}
+
+

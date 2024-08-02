@@ -1,0 +1,44 @@
+body {
+    font-family: 'Helvetica Neue', Arial, sans-serif;
+    background-color: #f8f9fa;
+  }
+  
+  .navbar {
+    background-color: #FFCC00;
+  }
+  
+  .navbar-brand, .nav-link {
+    color: #ffffff !important;
+  }
+  
+  .navbar-brand:hover, .nav-link:hover {
+    color: #e6b800 !important;
+  }
+  
+  .card {
+    border: none;
+    border-radius: 10px;
+  }
+  
+  .card-body {
+    padding: 2rem;
+  }
+  
+  .btn-yellow {
+    background-color: #FFCC00;
+    border: none;
+    color: #ffffff;
+  }
+  
+  .btn-yellow:hover {
+    background-color: #e6b800;
+  }
+  
+  .text-yellow {
+    color: #FFCC00;
+  }
+  
+  .text-yellow:hover {
+    color: #e6b800;
+  }
+  
