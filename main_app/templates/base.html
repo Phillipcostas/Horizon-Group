@@ -1,4 +1,5 @@
 {% load static %} 
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -26,18 +27,16 @@
           {% if user.is_authenticated %}
           <li class="nav-item">
             <a class="nav-link link-light" href="{% url 'map' %}">Map</a>
-
-            <li class="nav-item">
-              <a class="nav-link link-light" href="{% url 'trip_list' %}">Trip</a>
-
-            <li class="nav-item">
-              <a class="nav-link link-light" href="{% url 'addTrip' %}">Add Trip</a>
-
-            </li>
-            <li class="nav-item">
-                <a class="nav-link link-light" href="{% url 'suitcase' %}">Suitcase</a>
-
-
+          </li>
+          <li class="nav-item">
+            <a class="nav-link link-light" href="{% url 'trip_list' %}">Trip</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link link-light" href="{% url 'addTrip' %}">Add Trip</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link link-light" href="{% url 'suitcase' %}">Suitcase</a>
+          </li>
           <li class="nav-item">  
             <a class="nav-link link-light" href="{% url 'logout' %}">Log Out</a>
             <form id="logout-form" method="post" action="{% url 'logout' %}" style="display: none;">
@@ -57,6 +56,9 @@
     </div>
   </nav>
   {% block content %}
+  {% endblock %}
+  
+  {% block footer %}
   {% endblock %}
 </body>
 </html>
