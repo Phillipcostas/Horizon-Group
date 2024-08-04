@@ -7,12 +7,12 @@
 {% block content %}
 <link rel="stylesheet" href="{% static 'css/home.css' %}" />
 
-<div class="hero-section" style="background-image: url('{% static 'images/login-background.jpeg' %}');">
-    <div class="container">
-        <h1 class="display-1">A World Of Luxury Awaits You</h1>
-        <p class="lead">Discover a New Look of Luxury Resorts.</p>
-        <a href="{% url 'trip_list' %}" class="btn btn-light btn-lg mt-3">Discover More</a>
-    </div>
+<div class="hero-section" style="background-image: url('{% static 'images/login-background.jpeg' %}'); background-size: cover; background-position: center; background-repeat: no-repeat; padding: 50px 0;">
+  <div class="container text-center">
+      <h1 class="display-4 text-white">A World Of Luxury Awaits You</h1>
+      <p class="lead text-white">Discover a New Look of Luxury Resorts.</p>
+      <a href="{% url 'trip_list' %}" class="btn btn-warning btn-md mt-3 text-dark">Discover More</a>
+  </div>
 </div>
 
 <section class="py-5" style="font-size: 0.8rem;">
@@ -43,7 +43,7 @@
               <i class="fas fa-star"></i>
               <i class="fas fa-star"></i>
               <i class="fas fa-star-half-alt"></i>
-              <div style="font-size: 0.6rem;">Customer reviews No.1 of all time</div>
+              <div style="font-size: 1rem;">Customer reviews No.1 of all time</div>
           </div>
           <a href="{% url 'trip_list' %}" class="btn btn-dark" style="font-size: 0.8rem;">Explore Now</a>
       </div>
@@ -194,26 +194,28 @@
 </section>
 {% endif %}
 
-<section class="py-5 bg-light">
-  <div class="container">
-      <div class="row justify-content-center">
-          <div class="col-md-8">
-              <div class="card">
-                  <div class="card-body">
-                      <h3 class="card-title text-center mb-4">Subscribe & Get Special Discount!</h3>
-                      <p class="text-center mb-4">Stay updated with our latest offers and exclusive discounts by subscribing to our newsletter.</p>
-                      <form class="d-flex justify-content-center">
-                          <input type="email" class="form-control me-2" placeholder="Enter your email" style="max-width: 300px;">
-                          <button type="submit" class="btn btn-primary">
-                              <i class="fas fa-arrow-right"></i>
-                          </button>
-                      </form>
-                  </div>
-              </div>
+<section class="py-5 bg-white">
+  <div class="container bg-white">
+    <div class="row justify-content-center">
+      <div class="col-md-8">
+        <div class="card" style="background-color: #f8f9fa;"> 
+          <div class="card-body">
+            <h3 class="card-title text-center mb-4">Subscribe & Get Special Discount!</h3>
+            <p class="text-center mb-4">Stay updated with our latest offers and exclusive discounts by subscribing to our newsletter.</p>
+            <form class="d-flex justify-content-center">
+              <input type="email" class="form-control me-2" placeholder="Enter your email" style="max-width: 300px;">
+              <button type="submit" class="btn btn-primary">
+                <i class="fas fa-arrow-right"></i>
+              </button>
+            </form>
           </div>
+        </div>
       </div>
+    </div>
   </div>
 </section>
+
+
 
 {% endblock %}
 

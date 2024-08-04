@@ -41,3 +41,7 @@ body {
 .text-yellow:hover {
   color: #e6b800;
 }
+
+.custom-width {
+    width: 300px; 
+}

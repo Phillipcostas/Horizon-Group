@@ -110,6 +110,17 @@
 .social-icon:hover {
   color: white;
 }
+
+.btn-yellow {
+  background-color: #ffcc00;
+  border-color: #ffcc00;
+  color: #000;
+}
+
+.btn-yellow:hover {
+  background-color: #e6b800;
+  border-color: #e6b800;
+}
   
 
 
