@@ -2,7 +2,7 @@
 from django import forms
 from django.contrib.auth.forms import UserCreationForm
 from django.contrib.auth.models import User
-from .models import Trip, SuitcaseItem, TripPhoto, UserInterest, Comment, Invitation
+from .models import Trip, SuitcaseItem, TripPhoto, UserInterest, Comment, Invitation, UserPhoto, UserProfile
 from django.conf import settings
 
 
@@ -28,6 +28,7 @@ class TripForm(forms.ModelForm):
         widget=forms.TextInput(attrs={"placeholder": "Where is your trip?"}),
         label="Location",
     )
+
     class TripForm(forms.Form):
         trip_photo = forms.ModelChoiceField(
         queryset=TripPhoto.objects.all(),
@@ -38,7 +39,6 @@ class TripForm(forms.ModelForm):
         initial=False,
         label="Make this trip public"
     )
-
 
     class Meta:
         model = Trip
@@ -58,15 +58,23 @@ class TripForm(forms.ModelForm):
 class SuitcaseItemForm(forms.ModelForm):
     class Meta:
         model = SuitcaseItem
-        fields = ['name', 'category']
+        fields = ["name", "category"]
         widgets = {
-            'name': forms.TextInput(attrs={'placeholder': 'Item name'}),
-            'category': forms.Select(attrs={'class': 'form-control'}),
-            'quantity': forms.NumberInput(attrs={'min': 1}),
-            'packed': forms.CheckboxInput(attrs={'class': 'form-check-input'}),
-
-        
+            "name": forms.TextInput(attrs={"placeholder": "Item name"}),
+            "category": forms.Select(attrs={"class": "form-control"}),
+            "quantity": forms.NumberInput(attrs={"min": 1}),
+            "packed": forms.CheckboxInput(attrs={"class": "form-check-input"}),
         }
+
+class ProfilePhotoForm(forms.ModelForm):
+    class ProfilePhotoForm(forms.Form):
+        profile_photo = forms.ModelChoiceField(
+            queryset=UserPhoto.objects.all(), label="User Photo"
+        )
+
+    class Meta:
+        model = UserProfile
+        fields = ["profile_photo"]
 
 class UserInterestForm(forms.ModelForm):
     class Meta:
@@ -88,3 +96,4 @@ class InvitationForm(forms.ModelForm):
     class Meta:
         model = Invitation
         fields = ['invited_user', 'can_comment']
+
