@@ -1,0 +1,49 @@
+{% extends 'base.html' %}
+
+{% block title %}Questions{% endblock %}
+
+{% block content %}
+<div class="container">
+  <h1 class="display-4">Tell Us About Yourself!</h1>
+  <form method="post" action="{% url 'interest' %}">
+    {% csrf_token %}
+    <div class="mb-3">
+        <label for="id_question_1">How do you like to travel?</label>
+        <select name="question_1" id="id_question_1" class="form-control">
+            <option value="Plane">Plane</option>
+            <option value="Train">Train</option>
+            <option value="Car">Car</option>
+            <option value="Boat">Boat</option>
+        </select>
+    </div>
+    <div class="mb-3">
+        <label for="id_question_2">What are your main travel interests?</label>
+        <select name="question_2" id="id_question_2" class="form-control">
+            <option value="Outdoors">Outdoors</option>
+            <option value="Relaxation">Relaxation</option>
+            <option value="Live Events">Live Events</option>
+            <option value="Work">Work</option>
+        </select>
+    </div>
+    <div class="mb-3">
+        <label for="id_question_3">What kind of dining experience are you looking to have on your travels?</label>
+        <select name="question_3" id="id_question_3" class="form-control">
+            <option value="Local">Local</option>
+            <option value="Fine Dining">Fine Dining</option>
+            <option value="Fast Food">Fast Food</option>
+            <option value="Vegetarian">Vegetarian</option>
+        </select>
+    </div>
+    <div class="mb-3">
+        <label for="id_question_4">How often do you find yourself traveling?</label>
+        <select name="question_4" id="id_question_4" class="form-control">
+            <option value="Very Often">Very Often</option>
+            <option value="Often">Often</option>
+            <option value="Once in a While">Once in a While</option>
+            <option value="Almost Never">Almost Never</option>
+        </select>
+    </div>
+    <button type="submit" class="btn btn-primary">Submit</button>
+  </form>
+</div>
+{% endblock %}

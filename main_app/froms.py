@@ -2,8 +2,13 @@
 from django import forms
 from django.contrib.auth.forms import UserCreationForm
 from django.contrib.auth.models import User
+<<<<<<< HEAD
+from .models import Trip, SuitcaseItem, TripPhoto, UserInterest, UserPhoto, UserProfile
+=======
 from .models import Trip, SuitcaseItem, TripPhoto, UserInterest, Comment, Invitation, UserPhoto, UserProfile
+>>>>>>> bee001e6df84980be2930b7a2b7235b5f815b3ba
 from django.conf import settings
+from django.forms import ModelForm, Textarea
 
 
 class SignUpForm(UserCreationForm):
@@ -65,6 +70,8 @@ class SuitcaseItemForm(forms.ModelForm):
             'quantity': forms.NumberInput(attrs={'min': 1, 'class': 'form-control'}),
         }
 
+<<<<<<< HEAD
+=======
 class ProfilePhotoForm(forms.ModelForm):
     class ProfilePhotoForm(forms.Form):
         profile_photo = forms.ModelChoiceField(
@@ -75,10 +82,22 @@ class ProfilePhotoForm(forms.ModelForm):
         model = UserProfile
         fields = ["profile_photo"]
 
+>>>>>>> bee001e6df84980be2930b7a2b7235b5f815b3ba
 class UserInterestForm(forms.ModelForm):
     class Meta:
         model = UserInterest
         fields = ['question_1', 'question_2', 'question_3', 'question_4']
+<<<<<<< HEAD
+
+        widgets = {
+            'question_1': forms.Select(attrs={'class': 'form-control'}),
+            'question_2': forms.Select(attrs={'class': 'form-control'}),
+            'question_3': forms.Select(attrs={'class': 'form-control'}),
+            'question_4': forms.Select(attrs={'class': 'form-control'})
+        }
+
+    
+=======
         widgets = {
             'question_1': forms.Select(attrs={'class': 'form-control'})
         }
@@ -96,3 +115,4 @@ class InvitationForm(forms.ModelForm):
         model = Invitation
         fields = ['invited_user', 'can_comment']
 
+>>>>>>> bee001e6df84980be2930b7a2b7235b5f815b3ba

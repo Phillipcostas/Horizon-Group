@@ -18,5 +18,6 @@ urlpatterns = [
     path('suitcase/remove/<int:pk>/', views.remove_suitcase_item, name='remove_suitcase_item'),
     path('suitcase/toggle/<int:pk>/', views.toggle_packed_status, name='toggle_packed_status'),
     path('suitcase/update/<int:pk>/', views.update_suitcase_item, name='update_suitcase_item'),
+    path("accounts/signup/questions/", views.user_interest, name="interest"),
     path("profile/", views.profile, name="profile"),
 ]
