@@ -7,7 +7,7 @@ from .models import UserProfile, Trip, Itinerary, SuitcaseItem, UserPhoto, TripP
 from django.conf import settings
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.views.generic import View
-from .froms import TripForm, SuitcaseItemForm, ProfilePhotoForm
+from .froms import TripForm, SuitcaseItemForm, ProfilePhotoForm, UserInterestForm
 from datetime import date, timedelta
 from collections import defaultdict
 
@@ -167,6 +167,7 @@ class AddItinerary(LoginRequiredMixin, View):
             print(f"Added itinerary: {itinerary_name} to day: {day}")  # Debugging line
         else:
             print("Itinerary name is empty")  # Debugging line
+
         return redirect("trip_detail", pk=pk)
 
 
@@ -188,3 +189,14 @@ def profile(request):
         "form": form,
     }
     return render(request, "profile.html", context)
+
+        return redirect('trip_detail', pk=pk)
+    
+def user_interest(request):
+    if request.method == "POST":
+        form = UserInterestForm(request.POST)
+        if form.is_valid():
+            user_profile = UserProfile.objects.get(user=request.user)
+            user_profile = form.save()
+            trip = form.save(commit=False)
+
