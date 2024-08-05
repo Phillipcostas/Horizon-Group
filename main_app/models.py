@@ -18,33 +18,36 @@ class TripPhoto(models.Model):
     
 class UserInterest(models.Model):
     QUESTION_1_CHOICES = [
-        ('green', 'green'),
-        ('yellow', 'yellow'),
-        ('option_3', 'Option 3'),
-        ('option_4', 'Option 4'),
+        ('Plane', 'Plane'),
+        ('Train', 'Train'),
+        ('Car', 'Car'),
+        ('Boat', 'Boat'),
     ]
     QUESTION_2_CHOICES = [
-        ('option_1', 'Option 1'),
-        ('option_2', 'Option 2'),
-        ('option_3', 'Option 3'),
-        ('option_4', 'Option 4'),
+        ('Outdoors', 'Outdoors'),
+        ('Relaxation', 'Relaxation'),
+        ('Live Events', 'Live Events'),
+        ('Work', 'Work'),
     ]
     QUESTION_3_CHOICES = [
-        ('option_1', 'Option 1'),
-        ('option_2', 'Option 2'),
-        ('option_3', 'Option 3'),
-        ('option_4', 'Option 4'),
+        ('Local', 'Local'),
+        ('Fine Dining', 'Fine Dining'),
+        ('Fast Food', 'Fast Food'),
+        ('Vegetarian', 'Vegetarian'),
     ]
     QUESTION_4_CHOICES = [
-        ('option_1', 'Option 1'),
-        ('option_2', 'Option 2'),
-        ('option_3', 'Option 3'),
-        ('option_4', 'Option 4'),
+        ('Very Often', 'Very Often'),
+        ('Often', 'Often'),
+        ('Once in a While', 'Once in a While'),
+        ('Almost Never', 'Almost Never'),
     ]
-    color = models.CharField(max_length=255, choices=QUESTION_1_CHOICES, default='', blank=False)
-    question_2 = models.CharField(max_length=255, choices=QUESTION_2_CHOICES, default='option_1', blank=False)
-    question_3 = models.CharField(max_length=255, choices=QUESTION_3_CHOICES, default='option_1', blank=False)
-    question_4 = models.CharField(max_length=255, choices=QUESTION_4_CHOICES, default='option_1', blank=False)
+    question_1 = models.CharField(max_length=255, choices=QUESTION_1_CHOICES, default='Plane', blank=False)
+    question_2 = models.CharField(max_length=255, choices=QUESTION_2_CHOICES, default='Outdoors', blank=False)
+    question_3 = models.CharField(max_length=255, choices=QUESTION_3_CHOICES, default='Local', blank=False)
+    question_4 = models.CharField(max_length=255, choices=QUESTION_4_CHOICES, default='Very Often', blank=False)
+
+    def __str__(self):
+        return f"UserInterest({self.question_1}, {self.question_2}, {self.question_3}, {self.question_4})"
 
 
 class UserProfile(models.Model):

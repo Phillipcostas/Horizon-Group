@@ -28,19 +28,32 @@ def trip_index(request):
 
 
 def user_interest(request):
+    userProfile = UserProfile.objects.get(user=request.user)
+
     error_message = ""
+    form = UserInterestForm(request.POST)
+
     if request.method == "POST":
-        form = UserInterestForm(request.POST)
         if form.is_valid():
-            print (form.cleaned_data['interest1'])
+            user_interest = form.save(commit=False)
+            selected_1 = form.cleaned_data["question_1"]
+            userProfile.interest1 = selected_1
+            selected_2 = form.cleaned_data["question_2"]
+            userProfile.interest2 = selected_2
+            selected_3 = form.cleaned_data["question_3"]
+            userProfile.interest3 = selected_3
+            selected_4 = form.cleaned_data["question_4"]
+            userProfile.interest4 = selected_4
+            userProfile.save()
+            return redirect('/')
+        else:
+            error_message = "Plese fill out the form before moving forward."
+            return redirect('/')
     else:
         form = UserInterestForm()
+    
     context = {"form": form, "error_message": error_message}
-    return render(request, "registration/interestQuestions.html", context)
-
-
-        
-
+    return render(request, 'registration/interestQuestions.html', context)
 
 
 def signup(request):
@@ -52,7 +65,7 @@ def signup(request):
             login(request, user)
             userProfile = UserProfile.objects.create(user=user, name=user.username)
             userProfile.save()
-            return redirect("interestQuestions.html")
+            return redirect("interest")
         else:
             error_message = "Invalid sign up - try again"
     else:
