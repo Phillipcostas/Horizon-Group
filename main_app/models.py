@@ -85,19 +85,19 @@ class Itinerary(models.Model):
 
 class SuitcaseItem(models.Model):
     CATEGORY_CHOICES = [
-        ("Essentials", "Essentials"),
-        ("Toiletries", "Toiletries"),
-        ("Speciality Clothes", "Speciality Clothes"),
-        ("Lounge Wear", "Lounge Wear"),
+        ('Essentials', 'Essentials'),
+        ('Toiletries', 'Toiletries'),
+        ('Speciality Clothes', 'Speciality Clothes'),
+        ('Lounge Wear', 'Lounge Wear'),
+        ('Tech', "Tech"),
+        ('Documents', 'Documents'),
     ]
 
     user = models.ForeignKey(User, on_delete=models.CASCADE)
     name = models.CharField(max_length=100)
-    quantity = models.IntegerField(default=1)  # New field
+    quantity = models.IntegerField(default=1)
     packed = models.BooleanField(default=False)
-    category = models.CharField(
-        max_length=50, choices=CATEGORY_CHOICES, default="some-string"
-    )
+    category = models.CharField(max_length=50, choices=CATEGORY_CHOICES, default="some-string")
 
     def __str__(self):
         return self.name
