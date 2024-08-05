@@ -18,7 +18,6 @@ class TripPhoto(models.Model):
     url = models.URLField(max_length=1000)
 
     def __str__(self):
-<<<<<<< HEAD
         return self.photo_url
     
 class UserInterest(models.Model):
@@ -53,29 +52,15 @@ class UserInterest(models.Model):
 
     def __str__(self):
         return f"UserInterest({self.question_1}, {self.question_2}, {self.question_3}, {self.question_4})"
-=======
-        return self.name
->>>>>>> bee001e6df84980be2930b7a2b7235b5f815b3ba
 
 
 class UserProfile(models.Model):
     name = models.CharField(max_length=255)
-<<<<<<< HEAD
     interest1 = models.CharField(default="")
     interest2= models.CharField(default="")
     interest3= models.CharField(default="")
     interest4= models.CharField(default="")
     profile_photo = models.ForeignKey(UserPhoto, on_delete=models.SET_NULL, null=True, blank=True, related_name="user_profiles")
-=======
-    interests = models.TextField(default="")
-    profile_photo = models.ForeignKey(
-        UserPhoto,
-        on_delete=models.SET_NULL,
-        null=True,
-        blank=True,
-        related_name="user_profiles",
-    )
->>>>>>> bee001e6df84980be2930b7a2b7235b5f815b3ba
     user = models.OneToOneField(User, on_delete=models.CASCADE, related_name="profile")
 
     def __str__(self):

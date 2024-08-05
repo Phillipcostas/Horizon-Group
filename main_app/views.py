@@ -3,19 +3,11 @@ from django.contrib.auth.views import LoginView
 from django.contrib.auth import login
 from django.contrib.auth.forms import UserCreationForm
 from django.contrib.auth.decorators import login_required
-<<<<<<< HEAD
-from .models import UserProfile, Trip, Itinerary, SuitcaseItem, UserPhoto, TripPhoto, UserInterest
+from .models import UserProfile, Trip, Itinerary, SuitcaseItem, UserPhoto, TripPhoto, UserInterest, Invitation
 from django.conf import settings
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.views.generic import View
-from .froms import TripForm, SuitcaseItemForm, UserInterestForm
-=======
-from .models import UserProfile, Trip, Itinerary, SuitcaseItem, UserPhoto, TripPhoto, Invitation
-from django.conf import settings
-from django.contrib.auth.mixins import LoginRequiredMixin
-from django.views.generic import View
-from .froms import TripForm, SuitcaseItemForm, ProfilePhotoForm, UserInterestForm, InvitationForm, CommentForm
->>>>>>> bee001e6df84980be2930b7a2b7235b5f815b3ba
+from .froms import TripForm, SuitcaseItemForm, UserInterestForm, ProfilePhotoForm, UserInterestForm, InvitationForm, CommentForm
 from datetime import date, timedelta
 from collections import defaultdict
 from django.contrib import messages

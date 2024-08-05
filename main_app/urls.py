@@ -14,17 +14,9 @@ urlpatterns = [
     path("accounts/", include("django.contrib.auth.urls")),
     path("accounts/signup/", views.signup, name="signup"),
     path("accounts/login/", views.Login.as_view(), name="login"),
-<<<<<<< HEAD
     path('suitcase/', views.suitcase_view, name='suitcase'),
     path('suitcase/remove/<int:pk>/', views.remove_suitcase_item, name='remove_suitcase_item'),
     path('suitcase/toggle/<int:pk>/', views.toggle_packed_status, name='toggle_packed_status'),
-    path("accounts/signup/questions/", views.user_interest, name="interest")
-
-
-=======
-    path("suitcase/", views.suitcase_view, name="suitcase"),
-    path("suitcase/remove/<int:pk>/",views.remove_suitcase_item,name="remove_suitcase_item",),
-    path("suitcase/toggle/<int:pk>/",views.toggle_packed_status,name="toggle_packed_status",),
+    path("accounts/signup/questions/", views.user_interest, name="interest"),
     path("profile/", views.profile, name="profile"),
->>>>>>> bee001e6df84980be2930b7a2b7235b5f815b3ba
 ]
