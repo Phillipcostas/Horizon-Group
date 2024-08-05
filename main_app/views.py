@@ -125,7 +125,7 @@ class TripDetailView(LoginRequiredMixin, View):
         trip = get_object_or_404(Trip, pk=pk, user=request.user)
         trip_photo_id = trip.trip_photo_id
         trip_photo = TripPhoto.objects.filter(id = trip_photo_id)
-        photo = trip_photo[0] 
+        photo = trip_photo[0]
         num_days = trip.number_of_days()
         itineraries_by_day = {}
         for day in range(1, num_days + 1):
@@ -143,4 +143,7 @@ class AddItinerary(LoginRequiredMixin, View):
         else:
             print("Itinerary name is empty")  # Debugging line
         return redirect('trip_detail', pk=pk)
-    
+
+def profile(request):
+    userProfile = UserProfile.objects.get(user=request.user)
+    return render(request, 'profile.html', {'userProfile': userProfile})
