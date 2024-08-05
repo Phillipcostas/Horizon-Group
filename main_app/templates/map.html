@@ -1,7 +1,7 @@
 {% extends 'base.html' %}
 {% block title %}Map{% endblock %}
 {% block content %}
-<body onload="initMap()">
+<body>
   <div class="jumbotron">
     <h1 class="display-4">Where Will You Go</h1>
   </div>
@@ -100,6 +100,6 @@
       }
     }
   </script>
-  <script src="https://maps.googleapis.com/maps/api/js?key={{api_key}}&callback=initMap&libraries=places"></script>
+  <script src="https://maps.googleapis.com/maps/api/js?key={{api_key}}&callback=initMap&libraries=places" async defer></script>
 </body>
 {% endblock %}
