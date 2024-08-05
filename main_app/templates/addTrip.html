@@ -3,15 +3,63 @@
 {% block title %}Add Trip{% endblock %}
 
 {% block content %}
-<div class="jumbotron">
-  <h1 class="display-4">Welcome to Add Trip</h1>
-  <p class="lead">This is the Add Trip page.</p>
-  <h1 class="display-4">Add a New Trip</h1>
-  <form method="post">
-    {% csrf_token %}
-    {{ form.as_p }}
-    <button type="submit" class="btn btn-primary">Add Trip</button>
-  </form>
+<div class="jumbotron py-5 bg-light" style="font-size: 0.8rem;">
+  <div class="container text-center">
+      <h1 class="display-4 mb-4" style="font-size: 2.0rem; font-weight: bold;">Welcome to Add Trip</h1>
+      <p class="lead mb-4" style="font-size: 1.2rem;">This is the Add Trip page.</p>
+      <h1 class="display-4 mb-4" style="font-size: 2.0rem; font-weight: bold;">Add a New Trip</h1>
+      <div class="row justify-content-center">
+          <div class="col-md-6">
+              <div class="card mb-4 shadow-sm" style="border-radius: 10px;">
+                  <div class="card-body">
+                      <form method="post">
+                          {% csrf_token %}
+                          <div class="form-group">
+                              {{ form.as_p }}
+                          </div>
+                          <button type="submit" class="btn btn-yellow" style="font-size: 1rem; width: 100%;">Add Trip</button>
+                      </form>
+                  </div>
+              </div>
+          </div>
+      </div>
+  </div>
 </div>
 {% endblock %}
+
+{% block footer %}
+<footer class="bg-dark text-white py-5">
+  <div class="container">
+      <div class="row">
+          <div class="col-md-4 mb-4 mb-md-0">
+              <h5 class="mb-3">Horizon</h5>
+              <p>Discover the best travel experiences with Horizon. From luxury resorts to adventure trips, we have it all.</p>
+          </div>
+          <div class="col-md-4 mb-4 mb-md-0">
+              <h5 class="mb-3">Quick Links</h5>
+              <ul class="list-unstyled">
+                  <li><a href="#" class="text-white">About</a></li>
+                  <li><a href="#" class="text-white">Terms</a></li>
+                  <li><a href="#" class="text-white">Privacy</a></li>
+                  <li><a href="#" class="text-white">Career</a></li>
+                  <li><a href="#" class="text-white">Contact Us</a></li>
+                  <li><a href="#" class="text-white">Cookies</a></li>
+              </ul>
+          </div>
+          <div class="col-md-4">
+              <h5 class="mb-3">Follow Us</h5>
+              <div>
+                  <a href="#" class="social-icon" style="background-color: #3b5998;"><i class="fab fa-facebook-f"></i></a>
+                  <a href="#" class="social-icon" style="background-color: #E1306C;"><i class="fab fa-instagram"></i></a>
+                  <a href="#" class="social-icon" style="background-color: #1DA1F2;"><i class="fab fa-twitter"></i></a>
+                  <a href="#" class="social-icon" style="background-color: #0077B5;"><i class="fab fa-linkedin-in"></i></a>
+              </div>
+          </div>
+      </div>
+      <hr class="my-4">
+      <p class="text-center mb-0">Copyright © 2024 Horizon. Built by Cool 8</p>
+  </div>
+</footer>
+{% endblock %}
+
 

@@ -102,10 +102,13 @@ def remove_suitcase_item(request, pk):
 @login_required
 def toggle_packed_status(request, pk):
     item = get_object_or_404(SuitcaseItem, pk=pk, user=request.user)
-    if request.method == 'POST':
+    if 'packed' in request.POST:
         item.packed = not item.packed
-        item.save()
+    if 'quantity' in request.POST:
+        item.quantity = request.POST.get('quantity')
+    item.save()
     return redirect('suitcase')
+
 
 class Home(LoginRequiredMixin, LoginView):
     def get(self, request):

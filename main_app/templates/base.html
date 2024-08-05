@@ -1,3 +1,5 @@
+{% load static %} 
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -9,56 +11,96 @@
   {% load bootstrap5 %}
   {% bootstrap_css %}
   {% bootstrap_javascript %}
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" />
+  <link rel="stylesheet" href="{% static 'css/style.css' %}" />
+  <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.9.0/css/bootstrap-datepicker.min.css" rel="stylesheet">
+
+  
+  <style>
+    :root {
+      --yellow-color: #ffc107; /* Bootstrap's text-warning color */
+    }
+    .logo-icon {
+      background-color: var(--yellow-color);
+      color: black;
+      display: inline-block;
+      padding: 2px 10px;
+      border-radius: 15px;
+      font-size: 1.5rem;
+      font-family: 'Pacifico', cursive;
+      margin-right: 5px;
+    }
+    .navbar-nav-center {
+      position: absolute;
+      left: 50%;
+      transform: translateX(-50%);
+    }
+    .btn-yellow {
+      background-color: var(--yellow-color);
+      border-color: var(--yellow-color);
+      color: black;
+    }
+  </style>
 </head>
 <body>
-  <nav class="navbar navbar-expand-lg navbar-light bg-info">
+  <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
     <div class="container-fluid">
-      <a class="navbar-brand link-light" href="{% url 'home' %}">Horizon</a>
+      <a class="navbar-brand text-light" href="{% url 'home' %}">
+        <span class="logo-icon">H</span> Horizon
+      </a>
+      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+      </button>
       <div class="collapse navbar-collapse" id="navbarNav">
-        <ul class="navbar-nav">
-        
+        <ul class="navbar-nav navbar-nav-center mb-2 mb-lg-0">
           {% if user.is_authenticated %}
-
           <li class="nav-item">
             <a class="nav-link link-light" href="{% url 'map' %}">Map</a>
-
-            <li class="nav-item">
-              <a class="nav-link link-light" href="{% url 'trip_list' %}">Trip</a>
-
-            <li class="nav-item">
-              <a class="nav-link link-light" href="{% url 'addTrip' %}">Add Trip</a>
-
-            </li>
-            <li class="nav-item">
-                <a class="nav-link link-light" href="{% url 'suitcase' %}">Suitcase</a>
-
-
-          <li class="nav-item">  
+          </li>
+          <li class="nav-item">
+            <a class="nav-link link-light" href="{% url 'trip_list' %}">Trip</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link link-light" href="{% url 'addTrip' %}">Add Trip</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link link-light" href="{% url 'suitcase' %}">Suitcase</a>
+          </li>
+          {% endif %}
+        </ul>
+        <ul class="navbar-nav ms-auto mb-2 mb-lg-0">
+          {% if user.is_authenticated %}
+          <li class="nav-item">
             <a class="nav-link link-light" href="{% url 'logout' %}">Log Out</a>
             <form id="logout-form" method="post" action="{% url 'logout' %}" style="display: none;">
               {% csrf_token %}
             </form>
-
-            {% else %}
-
-            <li class="nav-item">
-              <a class="nav-link link-light" href="{% url 'signup' %}">Sign Up</a>
-            </li>
-            <li class="nav-item">
-              <a class="nav-link link-light" href="{% url 'login' %}">Sign In</a>
-
-              {% endif %}
-              
-            </li>
           </li>
+          {% else %}
+          <li class="nav-item">
+            <a class="nav-link text-light" href="{% url 'signup' %}">Sign Up</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link text-light" href="{% url 'login' %}">Sign In</a>
+          </li>
+          {% endif %}
         </ul>
       </div>
     </div>
   </nav>
-
-  <div class="container">
-    {% block content %}
-    {% endblock %}
-  </div>
+  {% block content %}
+  {% endblock %}
+  
+  {% block footer %}
+  {% endblock %}
 </body>
 </html>
+
+
+
+
+
+
+

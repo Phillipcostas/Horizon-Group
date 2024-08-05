@@ -1,66 +1,255 @@
 {% extends 'base.html' %}
 
+{% load static %}
+
 {% block title %}Home{% endblock %}
 
 {% block content %}
-<div class="jumbotron">
-  <h1 class="display-4">Welcome to Horizon</h1>
-  <p class="lead">This is the Home Page.</p>
-</div>
-<div class="jumbotron">
-  <h1 class="display-4">Upcoming Trips</h1>
-  <div class="row">
-    {% for trip in upcoming_trips %}
-    <div class="col-md-4">
-      <div class="card mb-4 shadow-sm">
-        <div class="card-body">
-          <h5 class="card-title">{{ trip.name }}</h5>
-          <p class="card-text">
-            Location: {{ trip.location }}<br>
-            Start Date: {{ trip.start_date }}<br>
-            End Date: {{ trip.end_date }}
-          </p>
-          <a href="{% url 'trip_detail' trip.pk %}" class="btn btn-primary">View Details</a>
-        </div>
-      </div>
-    </div>
-    {% endfor %}
-  </div>
-  <h1 class="display-4">All Trips</h1>
-  <div class="row">
-    {% for trip in other_trips %}
-    <div class="col-md-4">
-      <div class="card mb-4 shadow-sm">
-        <div class="card-body">
-          <h5 class="card-title">{{ trip.name }}</h5>
-          <p class="card-text">
-            Location: {{ trip.location }}<br>
-            Start Date: {{ trip.start_date }}<br>
-            End Date: {{ trip.end_date }}
-          </p>
-          <a href="{% url 'trip_detail' trip.pk %}" class="btn btn-primary">View Details</a>
-        </div>
-      </div>
-    </div>
-    {% endfor %}
+<link rel="stylesheet" href="{% static 'css/home.css' %}" />
+
+<div class="hero-section" style="background-image: url('{% static 'images/login-background.jpeg' %}'); background-size: cover; background-position: center; background-repeat: no-repeat; padding: 50px 0;">
+  <div class="container text-center">
+      <h1 class="display-4 text-white">A World Of Luxury Awaits You</h1>
+      <p class="lead text-white">Discover a New Look of Luxury Resorts.</p>
+      <a href="{% url 'trip_list' %}" class="btn btn-warning btn-md mt-3 text-dark">Discover More</a>
   </div>
 </div>
+
+<section class="py-5" style="font-size: 0.8rem;">
+  <div class="container text-center">
+      <h2 class="mb-4" style="font-size: 2.0rem;">Here is a tribute to good life!</h2>
+      <p class="mb-5 mx-auto" style="font-size: 0.8rem; width: 60%; opacity: 0.8;">
+          Experience the pinnacle of luxury with our exclusive resorts and personalized services. Indulge in world-class amenities and exquisite dining options tailored to your every desire. Our resorts boast high ratings, prime locations, and exceptional attention to detail, ensuring your stay is nothing short of perfection. Enjoy hassle-free cancellations, flexible booking options, and a dedicated concierge team ready to cater to your every need. Whether you're seeking a romantic getaway, a family vacation, or a solo retreat, our resorts offer unparalleled comfort and unforgettable experiences. Book your dream vacation with us and discover the ultimate in luxury and relaxation.
+      </p>
+      <div class="row justify-content-center mb-4">
+          <div class="col-md-3">
+              <i class="fas fa-star fa-1x text-warning"></i>
+              <h3 class="mt-2" style="font-size: 0.8rem;">High Ratings</h3>
+          </div>
+          <div class="col-md-3">
+              <i class="fas fa-map-marker-alt fa-1x text-primary"></i>
+              <h5 class="mt-2" style="font-size: 0.8rem;">Prime Locations</h5>
+          </div>
+          <div class="col-md-3">
+              <i class="fas fa-calendar-check fa-1x text-success"></i>
+              <h5 class="mt-2" style="font-size: 0.8rem;">Free Cancellations</h5>
+          </div>
+      </div>
+      <div class="d-flex align-items-center justify-content-center">
+          <h3 class="me-3 mb-0" style="font-size: 3rem;">4.5</h3>
+          <div class="text-warning me-3 text-center" style="font-size: 1rem;">
+              <i class="fas fa-star"></i>
+              <i class="fas fa-star"></i>
+              <i class="fas fa-star"></i>
+              <i class="fas fa-star"></i>
+              <i class="fas fa-star-half-alt"></i>
+              <div style="font-size: 1rem;">Customer reviews No.1 of all time</div>
+          </div>
+          <a href="{% url 'trip_list' %}" class="btn btn-dark" style="font-size: 0.8rem;">Explore Now</a>
+      </div>
+  </div>
+</section>
+
+
+
+
+<section class="experience-section py-5 bg-light">
+  <div class="container">
+      <h2 class="text-center mb-5">Our Exciting Experiences</h2>
+      <div id="experienceCarousel" class="carousel slide" data-bs-ride="carousel">
+          <div class="carousel-inner">
+              <div class="carousel-item active">
+                  <div class="row">
+                      <div class="col-md-4">
+                          <div class="card position-relative">
+                              <img src="{% static 'images/wedding.jpeg' %}" class="card-img-top" alt="Wedding & Romance" style="height: 400px; object-fit: cover;">
+                              <div class="card-img-overlay d-flex flex-column justify-content-end hover-effect" style="background: rgba(0, 0, 0, 0.5); color: white;">
+                                  <h5 class="card-title">Wedding & Romance</h5>
+                                  <p class="card-text">Celebrate your special moments in paradise with our exquisite wedding and romance packages.</p>
+                                  <a href="{% url 'trip_list' %}" class="btn btn-link text-white">Explore Now →</a>
+                              </div>
+                          </div>
+                      </div>
+                      <div class="col-md-4">
+                          <div class="card position-relative">
+                              <img src="{% static 'images/Activities.jpg' %}" class="card-img-top" alt="Activities" style="height: 400px; object-fit: cover;">
+                              <div class="card-img-overlay d-flex flex-column justify-content-end hover-effect" style="background: rgba(0, 0, 0, 0.5); color: white;">
+                                  <h5 class="card-title">Activities</h5>
+                                  <p class="card-text">Enjoy a wide range of exciting activities for all ages, from adventure sports to relaxing leisure pursuits.</p>
+                                  <a href="{% url 'trip_list' %}" class="btn btn-link text-white">Explore Now →</a>
+                              </div>
+                          </div>
+                      </div>
+                      <div class="col-md-4">
+                          <div class="card position-relative">
+                              <img src="{% static 'images/Event Calendar.jpg' %}" class="card-img-top" alt="Event Calendar" style="height: 400px; object-fit: cover;">
+                              <div class="card-img-overlay d-flex flex-column justify-content-end hover-effect" style="background: rgba(0, 0, 0, 0.5); color: white;">
+                                  <h5 class="card-title">Event Calendar</h5>
+                                  <p class="card-text">Stay updated with our event calendar and never miss out on our exclusive events and activities.</p>
+                                  <a href="{% url 'trip_list' %}" class="btn btn-link text-white">Explore Now →</a>
+                              </div>
+                          </div>
+                      </div>
+                  </div>
+              </div>
+              <div class="carousel-item">
+                  <div class="row">
+                      <div class="col-md-4">
+                          <div class="card position-relative">
+                              <img src="{% static 'images/dining.jpg' %}" class="card-img-top" alt="Dining" style="height: 400px; object-fit: cover;">
+                              <div class="card-img-overlay d-flex flex-column justify-content-end hover-effect" style="background: rgba(0, 0, 0, 0.5); color: white;">
+                                  <h5 class="card-title">Dining</h5>
+                                  <p class="card-text">Indulge in our gourmet dining experiences with a variety of cuisines from around the world.</p>
+                                  <a href="{% url 'trip_list' %}" class="btn btn-link text-white">Explore Now →</a>
+                              </div>
+                          </div>
+                      </div>
+                      <div class="col-md-4">
+                          <div class="card position-relative">
+                              <img src="{% static 'images/spa.jpeg' %}" class="card-img-top" alt="Spa & Wellness" style="height: 400px; object-fit: cover;">
+                              <div class="card-img-overlay d-flex flex-column justify-content-end hover-effect" style="background: rgba(0, 0, 0, 0.5); color: white;">
+                                  <h5 class="card-title">Spa & Wellness</h5>
+                                  <p class="card-text">Relax and rejuvenate with our luxurious spa and wellness treatments.</p>
+                                  <a href="{% url 'trip_list' %}" class="btn btn-link text-white">Explore Now →</a>
+                              </div>
+                          </div>
+                      </div>
+                      <div class="col-md-4">
+                          <div class="card position-relative">
+                              <img src="{% static 'images/Adventure Large.jpeg' %}" class="card-img-top" alt="Adventure" style="height: 400px; object-fit: cover;">
+                              <div class="card-img-overlay d-flex flex-column justify-content-end hover-effect" style="background: rgba(0, 0, 0, 0.5); color: white;">
+                                  <h5 class="card-title">Adventure</h5>
+                                  <p class="card-text">Get your adrenaline pumping with our thrilling adventure activities and excursions.</p>
+                                  <a href="{% url 'trip_list' %}" class="btn btn-link text-white">Explore Now →</a>
+                              </div>
+                          </div>
+                      </div>
+                  </div>
+              </div>
+          </div>
+          <button class="carousel-control-prev" type="button" data-bs-target="#experienceCarousel" data-bs-slide="prev">
+              <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+              <span class="visually-hidden">Previous</span>
+          </button>
+          <button class="carousel-control-next" type="button" data-bs-target="#experienceCarousel" data-bs-slide="next">
+              <span class="carousel-control-next-icon" aria-hidden="true"></span>
+              <span class="visually-hidden">Next</span>
+          </button>
+      </div>
+  </div>
+</section>
+
+
+
+
+<div class="jumbotron py-5 bg-light" style="font-size: 0.8rem;">
+  <div class="container text-center">
+      <h1 class="display-4 mb-4" style="font-size: 2.0rem; font-weight: bold;">Upcoming Trips</h1>
+      <div class="row">
+          {% for trip in upcoming_trips %}
+          <div class="col-md-3">
+              <div class="card mb-4 shadow-sm" style="border-radius: 10px;">
+                  <div class="card-body p-0">
+                      <div class="trip-photo" style="position: relative; background-image: url('{{ trip.trip_photo }}'); height: 200px; background-size: cover; background-position: center; border-radius: 10px 10px 0 0;">
+                          <div class="overlay" style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; background-color: rgba(0, 0, 0, 0.5); border-radius: 10px 10px 0 0;"></div>
+                          <div class="trip-info" style="position: absolute; bottom: 10px; left: 50%; transform: translateX(-50%); color: white; text-align: center;">
+                              <h5 class="card-title" style="font-size: 4rem;">{{ trip.name }}</h5>
+                              <p class="card-text" style="font-size: 0.7rem;">
+                                  Location: {{ trip.location }}<br>
+                                  Start Date: {{ trip.start_date }}<br>
+                                  End Date: {{ trip.end_date }}
+                              </p>
+                              <a href="{% url 'trip_detail' trip.pk %}" class="btn" style="font-size: 0.8rem; background-color: #FFD700; color: black; margin-top: 5px;">View Details</a>
+                          </div>
+                      </div>
+                  </div>
+              </div>
+          </div>
+          {% endfor %}
+      </div>
+  </div>
 </div>
+
+
+
+
+
+
 
 {% if not user.is_authenticated %}
-<div class="row justify-content-center">
-  <div class="col-md-6">
-    <h2 class="text-center">Sign In</h2>
-    <form method="post" action="{% url 'login' %}">
-      {% csrf_token %}
-      {{ form.as_p }}
-      <button type="submit" class="btn btn-primary btn-block">Sign In</button>
-    </form>
-    <p class="mt-3 text-center">Don't have an account? <a href="{% url 'signup' %}" class="btn btn-secondary">Sign Up</a></p>
-  </div>
-</div>
-{% else %}
-
-</div>
+<section class="py-5">
+    <div class="container">
+        <div class="row justify-content-center">
+            <div class="col-md-6">
+                <h2 class="text-center mb-4">Sign In</h2>
+                <form method="post" action="{% url 'login' %}">
+                    {% csrf_token %}
+                    {{ form.as_p }}
+                    <button type="submit" class="btn btn-primary btn-block w-100">Sign In</button>
+                </form>
+                <p class="mt-3 text-center">Don't have an account? <a href="{% url 'signup' %}" class="btn btn-secondary">Sign Up</a></p>
+            </div>
+        </div>
+    </div>
+</section>
 {% endif %}
+
+<section class="py-5 bg-white">
+  <div class="container bg-white">
+    <div class="row justify-content-center">
+      <div class="col-md-8">
+        <div class="card" style="background-color: #f8f9fa;"> 
+          <div class="card-body">
+            <h3 class="card-title text-center mb-4">Subscribe & Get Special Discount!</h3>
+            <p class="text-center mb-4">Stay updated with our latest offers and exclusive discounts by subscribing to our newsletter.</p>
+            <form class="d-flex justify-content-center">
+              <input type="email" class="form-control me-2" placeholder="Enter your email" style="max-width: 300px;">
+              <button type="submit" class="btn btn-primary">
+                <i class="fas fa-arrow-right"></i>
+              </button>
+            </form>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+
+
+{% endblock %}
+
+{% block footer %}
+<footer class="bg-dark text-white py-5">
+  <div class="container">
+      <div class="row">
+          <div class="col-md-4 mb-4 mb-md-0">
+              <h5 class="mb-3">Horizon</h5>
+              <p>Discover the best travel experiences with Horizon. From luxury resorts to adventure trips, we have it all.</p>
+          </div>
+          <div class="col-md-4 mb-4 mb-md-0">
+              <h5 class="mb-3">Quick Links</h5>
+              <ul class="list-unstyled">
+                  <li><a href="#" class="text-white">About</a></li>
+                  <li><a href="#" class="text-white">Terms</a></li>
+                  <li><a href="#" class="text-white">Privacy</a></li>
+                  <li><a href="#" class="text-white">Career</a></li>
+                  <li><a href="#" class="text-white">Contact Us</a></li>
+                  <li><a href="#" class="text-white">Cookies</a></li>
+              </ul>
+          </div>
+          <div class="col-md-4">
+              <h5 class="mb-3">Follow Us</h5>
+              <div>
+                  <a href="#" class="social-icon" style="background-color: #3b5998;"><i class="fab fa-facebook-f"></i></a>
+                  <a href="#" class="social-icon" style="background-color: #E1306C;"><i class="fab fa-instagram"></i></a>
+                  <a href="#" class="social-icon" style="background-color: #1DA1F2;"><i class="fab fa-twitter"></i></a>
+                  <a href="#" class="social-icon" style="background-color: #0077B5;"><i class="fab fa-linkedin-in"></i></a>
+              </div>
+          </div>
+      </div>
+      <hr class="my-4">
+      <p class="text-center mb-0">Copyright © 2024 Horizon. Built by Cool 8</p>
+  </div>
+</footer>
 {% endblock %}
