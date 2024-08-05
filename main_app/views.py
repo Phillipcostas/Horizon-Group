@@ -77,43 +77,46 @@ def signup(request):
 
 @login_required
 def suitcase_view(request):
-    if request.method == "POST":
+    if request.method == 'POST':
         form = SuitcaseItemForm(request.POST)
         if form.is_valid():
             item = form.save(commit=False)
             item.user = request.user
             item.save()
-            # checkbox_value = form.cleaned_data['my_checkbox']
-
-            return redirect("suitcase")
+            return redirect('suitcase')
     else:
         form = SuitcaseItemForm()
 
     items = SuitcaseItem.objects.filter(user=request.user)
-    categories = ["Essentials", "Toiletries", "Speciality Clothes", "Lounge Wear"]
-    categorized_items = {
-        category: items.filter(category=category) for category in categories
-    }
-    context = {"form": form, "categorized_items": categorized_items}
-    return render(request, "suitcase.html", context)
-
-
-@login_required
-def remove_suitcase_item(request, pk):
-    item = get_object_or_404(SuitcaseItem, pk=pk, user=request.user)
-    item.delete()
-    return redirect("suitcase")
-
+    categories = ['Essentials', 'Toiletries', 'Speciality Clothes', 'Lounge Wear', 'Tech', 'Documents' ]
+    categorized_items = {category: items.filter(category=category) for category in categories}
+    context = {'form': form, 'categorized_items': categorized_items}
+    return render(request, 'suitcase.html', context)
 
 @login_required
 def toggle_packed_status(request, pk):
-    item = get_object_or_404(SuitcaseItem, pk=pk, user=request.user)
-    if "packed" in request.POST:
+    if request.method == 'POST':
+        item = get_object_or_404(SuitcaseItem, pk=pk, user=request.user)
         item.packed = not item.packed
-    if "quantity" in request.POST:
-        item.quantity = request.POST.get("quantity")
-    item.save()
-    return redirect("suitcase")
+        item.save()
+        return redirect('suitcase')
+
+@login_required
+def update_suitcase_item(request, pk):
+    if request.method == 'POST':
+        item = get_object_or_404(SuitcaseItem, pk=pk, user=request.user)
+        quantity = request.POST.get('quantity')
+        if quantity.isdigit():
+            item.quantity = int(quantity)
+            item.save()
+        return redirect('suitcase')
+
+@login_required
+def remove_suitcase_item(request, pk):
+    if request.method == 'POST':
+        item = get_object_or_404(SuitcaseItem, pk=pk, user=request.user)
+        item.delete()
+        return redirect('suitcase')
 
 
 class Home(LoginRequiredMixin, LoginView):

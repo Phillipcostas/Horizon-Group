@@ -63,12 +63,11 @@ class TripForm(forms.ModelForm):
 class SuitcaseItemForm(forms.ModelForm):
     class Meta:
         model = SuitcaseItem
-        fields = ["name", "category"]
+        fields = ['name', 'category', 'quantity']
         widgets = {
-            "name": forms.TextInput(attrs={"placeholder": "Item name"}),
-            "category": forms.Select(attrs={"class": "form-control"}),
-            "quantity": forms.NumberInput(attrs={"min": 1}),
-            "packed": forms.CheckboxInput(attrs={"class": "form-check-input"}),
+            'name': forms.TextInput(attrs={'placeholder': 'Item name', 'class': 'form-control'}),
+            'category': forms.Select(attrs={'class': 'form-control'}),
+            'quantity': forms.NumberInput(attrs={'min': 1, 'class': 'form-control'}),
         }
 
 <<<<<<< HEAD
