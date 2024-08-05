@@ -3,14 +3,15 @@ from django.contrib.auth.views import LoginView
 from django.contrib.auth import login
 from django.contrib.auth.forms import UserCreationForm
 from django.contrib.auth.decorators import login_required
-from .models import UserProfile, Trip, Itinerary, SuitcaseItem, UserPhoto, TripPhoto
+from .models import UserProfile, Trip, Itinerary, SuitcaseItem, UserPhoto, TripPhoto, Invitation
 from django.conf import settings
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.views.generic import View
-from .froms import TripForm, SuitcaseItemForm, UserInterestForm
+from .froms import TripForm, SuitcaseItemForm, UserInterestForm, CommentForm, InvitationForm
 from datetime import date, timedelta
 from collections import defaultdict
-
+from django.contrib import messages
+from django.http import HttpResponseForbidden
 
 
 def about(request):
@@ -101,7 +102,8 @@ class Login(LoginView):
     template_name = 'login.html'
 
 class AddTrip(LoginRequiredMixin, View):
-    trip_photos = TripPhoto.objects.all
+    trip_photos = TripPhoto.objects.all()
+
     def get(self, request):
         form = TripForm()
         return render(request, 'addTrip.html', {'form': form})
@@ -112,36 +114,59 @@ class AddTrip(LoginRequiredMixin, View):
             trip = form.save(commit=False)
             trip.user = request.user
             trip.save()
-            return redirect('trip_list')  
+            return redirect('trip_list')
         return render(request, 'addTrip.html', {'form': form})
     
 class TripListView(LoginRequiredMixin, View):
     def get(self, request):
-        trips = Trip.objects.filter(user=request.user)
-        return render(request, 'trip.html', {'trips': trips})
+        user_trips = Trip.objects.filter(user=request.user)
+        public_trips = Trip.objects.filter(public=True).exclude(user=request.user)
+        return render(request, 'trip.html', {
+            'user_trips': user_trips,
+            'public_trips': public_trips
+        })
     
 class TripDetailView(LoginRequiredMixin, View):
     def get(self, request, pk):
-        trip = get_object_or_404(Trip, pk=pk, user=request.user)
-        trip_photo_id = trip.trip_photo_id
-        trip_photo = TripPhoto.objects.filter(id = trip_photo_id)
-        photo = trip_photo[0] 
+        trip = get_object_or_404(Trip, pk=pk)
         num_days = trip.number_of_days()
         itineraries_by_day = {}
         for day in range(1, num_days + 1):
             itineraries_by_day[day] = list(Itinerary.objects.filter(trip=trip, day=day))
-        return render(request, 'trip_detail.html', {'trip': trip, 'num_days': num_days, 'itineraries_by_day': itineraries_by_day, 'photo': photo})
+        comments = trip.comments.all()
+        comment_form = CommentForm()
+        can_comment = trip.user == request.user or trip.can_comment(request.user)
+        can_edit = trip.user == request.user
+        return render(request, 'trip_detail.html', {
+            'trip': trip,
+            'num_days': num_days,
+            'itineraries_by_day': itineraries_by_day,
+            'comments': comments,
+            'comment_form': comment_form,
+            'can_comment': can_comment,
+            'can_edit': can_edit
+        })
 
+    def post(self, request, pk):
+        trip = get_object_or_404(Trip, pk=pk)
+        if trip.user != request.user and not trip.can_comment(request.user):
+            return redirect('trip_detail', pk=pk)
+        comment_form = CommentForm(request.POST)
+        if comment_form.is_valid():
+            comment = comment_form.save(commit=False)
+            comment.trip = trip
+            comment.user = request.user
+            comment.save()
+        return redirect('trip_detail', pk=pk)
 
 class AddItinerary(LoginRequiredMixin, View):
     def post(self, request, pk, day):
-        trip = get_object_or_404(Trip, pk=pk, user=request.user)
+        trip = get_object_or_404(Trip, pk=pk)
+        if trip.user != request.user:
+            return HttpResponseForbidden("You are not allowed to add itineraries to this trip.")
         itinerary_name = request.POST.get('itinerary_name')
         if itinerary_name:
             Itinerary.objects.create(trip=trip, day=day, name=itinerary_name)
-            print(f"Added itinerary: {itinerary_name} to day: {day}")  # Debugging line
-        else:
-            print("Itinerary name is empty")  # Debugging line
         return redirect('trip_detail', pk=pk)
     
 def user_interest(request):
@@ -151,3 +176,18 @@ def user_interest(request):
             user_profile = UserProfile.objects.get(user=request.user)
             user_profile = form.save()
             trip = form.save(commit=False)
+
+@login_required
+def send_invitation(request, trip_id):
+    trip = get_object_or_404(Trip, id=trip_id, user=request.user)
+    if request.method == 'POST':
+        form = InvitationForm(request.POST)
+        if form.is_valid():
+            invitation = form.save(commit=False)
+            invitation.trip = trip
+            invitation.save()
+            messages.success(request, f"Invitation sent to {invitation.invited_user.username}")
+            return redirect('trip_detail', pk=trip.id)
+    else:
+        form = InvitationForm()
+    return render(request, 'send_invitation.html', {'form': form, 'trip': trip})

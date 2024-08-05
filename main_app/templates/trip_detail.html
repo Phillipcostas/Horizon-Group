@@ -11,6 +11,10 @@
   <h3 class="text-center" style="font-size: 1.5rem;">From: {{ trip.start_date }} To: {{ trip.end_date }}</h3>
   <h4 class="text-center" style="font-size: 1.2rem;">Number of Days: {{ num_days }}</h4>
   
+  {% if can_edit %}
+  <a href="{% url 'send_invitation' trip.id %}" class="btn btn-primary mb-3">Invite Users</a>
+  {% endif %}
+
   <div class="booking-background" style="background-image: url('{{photo}}'); background-size: cover; background-position: center; background-repeat: no-repeat; border-radius: 10px; padding: 20px; margin: 20px 0;">
     <div class="overlay" style="background: rgba(255, 255, 255, 0.8); padding: 20px; border-radius: 10px;">
       <div class="row">
@@ -24,6 +28,7 @@
                 <li class="list-group-item bg-light">{{ itinerary.name }}</li>
                 {% endfor %}
               </ul>
+              {% if can_edit %}
               <form method="post" action="{% url 'add_itinerary' trip.pk day %}">
                 {% csrf_token %}
                 <div class="form-group">
@@ -32,6 +37,7 @@
                 </div>
                 <button type="submit" class="btn btn-yellow" style="font-size: 0.8rem;">Add</button>
               </form>
+              {% endif %}
             </div>
           </div>
         </div>
@@ -39,6 +45,31 @@
       </div>
     </div>
   </div>
+</div>
+<div class="comments-section mt-5">
+  <h3>Comments</h3>
+  <ul class="list-group">
+    {% for comment in comments %}
+    <li class="list-group-item">
+      <strong>{{ comment.user.username }}</strong>
+      <span class="text-muted" style="font-size: 0.8rem;">{{ comment.created_at }}</span>
+      <p>{{ comment.content }}</p>
+    </li>
+    {% endfor %}
+  </ul>
+
+  {% if user.is_authenticated and can_comment %}
+  <form method="post" class="mt-4">
+    {% csrf_token %}
+    {{ comment_form.as_p }}
+    <button type="submit" class="btn btn-primary">Add Comment</button>
+  </form>
+  {% elif not can_comment %}
+  <p class="text-center mt-4">You do not have permission to comment on this trip.</p>
+  {% else %}
+  <p class="text-center mt-4">Please <a href="{% url 'login' %}">log in</a> to comment.</p>
+  {% endif %}
+</div>
 </div>
 
 <style>

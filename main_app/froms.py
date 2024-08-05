@@ -2,7 +2,7 @@
 from django import forms
 from django.contrib.auth.forms import UserCreationForm
 from django.contrib.auth.models import User
-from .models import Trip, SuitcaseItem, TripPhoto, UserInterest
+from .models import Trip, SuitcaseItem, TripPhoto, UserInterest, Comment, Invitation
 from django.conf import settings
 
 
@@ -33,11 +33,16 @@ class TripForm(forms.ModelForm):
         queryset=TripPhoto.objects.all(),
         label="Trip Photo"
     )
+    public = forms.BooleanField(
+        required=False,
+        initial=False,
+        label="Make this trip public"
+    )
 
 
     class Meta:
         model = Trip
-        fields = ["name", "location", "start_date", "end_date", "trip_photo"]
+        fields = ["name", "location", "start_date", "end_date", "trip_photo", "public"]
         widgets = {
             "start_date": forms.DateInput(
                 format=("%Y-%m-%d"),
@@ -70,3 +75,16 @@ class UserInterestForm(forms.ModelForm):
         widgets = {
             'question_1': forms.Select(attrs={'class': 'form-control'})
         }
+
+class CommentForm(forms.ModelForm):
+    class Meta:
+        model = Comment
+        fields = ['content']
+
+
+class InvitationForm(forms.ModelForm):
+    invited_user = forms.ModelChoiceField(queryset=User.objects.all(), label="Invite User")
+
+    class Meta:
+        model = Invitation
+        fields = ['invited_user', 'can_comment']

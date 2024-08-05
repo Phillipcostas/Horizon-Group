@@ -3,6 +3,7 @@ from django.db import models
 from django.contrib.auth.models import User
 from django.core.exceptions import ValidationError
 from datetime import date
+from django.utils import timezone
 
 class UserPhoto(models.Model):
     photo_url = models.URLField(max_length=1000)
@@ -33,6 +34,7 @@ class Trip(models.Model):
     trip_photo = models.ForeignKey(TripPhoto, on_delete=models.SET_NULL, null=True, blank=True, related_name="trips")
     start_date = models.DateField(default=date.today)
     end_date = models.DateField(default=date.today)
+    public = models.BooleanField(default=False)
 
     def __str__(self):
         return self.name
@@ -49,6 +51,11 @@ class Trip(models.Model):
             
     def number_of_days(self):
         return (self.end_date - self.start_date).days + 1
+    def is_invited(self, user):
+        return self.invitations.filter(invited_user=user).exists()
+
+    def can_comment(self, user):
+        return self.invitations.filter(invited_user=user, can_comment=True).exists()
 
 
 class Itinerary(models.Model):
@@ -105,3 +112,21 @@ class UserInterest(models.Model):
     question_2 = models.CharField(max_length=255, choices=QUESTION_2_CHOICES, default='option_1', blank=False)
     question_3 = models.CharField(max_length=255, choices=QUESTION_3_CHOICES, default='option_1', blank=False)
     question_4 = models.CharField(max_length=255, choices=QUESTION_4_CHOICES, default='option_1', blank=False)
+
+class Comment(models.Model):
+    trip = models.ForeignKey(Trip, on_delete=models.CASCADE, related_name='comments')
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
+    content = models.TextField()
+    created_at = models.DateTimeField(default=timezone.now)
+
+    def __str__(self):
+        return f"Comment by {self.user.username} on {self.trip.name}"
+    
+class Invitation(models.Model):
+    trip = models.ForeignKey(Trip, on_delete=models.CASCADE, related_name='invitations')
+    invited_user = models.ForeignKey(User, on_delete=models.CASCADE, related_name='trip_invitations')
+    can_comment = models.BooleanField(default=True)
+    created_at = models.DateTimeField(auto_now_add=True)
+
+    def __str__(self):
+        return f"{self.invited_user.username} invited to {self.trip.name}"
