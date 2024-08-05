@@ -2,13 +2,28 @@
 {% block title %}Profile{% endblock %} 
 {% block content %}
 <div class="profile-container">
-  <h1 class="profile-header"> Welcome {{userProfile.name}}</h1>
+  <h1 class="profile-header">Welcome {{userProfile.name}}</h1>
   <div class="profile-image">
-    <img src="{{userProfile.profile_photo}}" alt="picture of {{userProfile.name}}" height="200" width="200">
+    {% if userProfile.profile_photo %}
+      <img src="{{ userProfile.profile_photo.url }}" alt="picture of {{userProfile.name}}" height="200" width="200">
+    {% else %}
+      <p>No profile photo set</p>
+    {% endif %}
   </div>
   <div class="profile-info">
     <p><strong>Name:</strong> {{userProfile.name}}</p>
     <p><strong>Email:</strong> {{userProfile.email}}</p>
+  </div>
+  {% if not userProfile.profile_photo %}
+  <div class="profile-action">
+    <form method="post">
+      {% csrf_token %}
+      <div class="form-group">
+        {{ form.as_p }}
+      </div>
+      <button type="submit" class="btn btn-yellow" style="font-size: 1rem; width: 100%;">Add Profile Photo</button>
+    </form>
+  </div>
+  {% endif %}
 </div>
-
 {% endblock %}
