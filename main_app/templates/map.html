@@ -81,8 +81,12 @@
               });
               markers.push(marker);
               marker.addListener('click', () => {
+              const content = `<p>${place.name}</p>
+                  <p>${place.formatted_address}</p>
+                  <a href="https://www.google.com/maps/place/?q=place_id:${place.place_id}" target="_blank">View on Google Maps</a>
+                `;
                 const infoWindow = new google.maps.InfoWindow({
-                  content: place.name
+                  content: content,
                 });
                 infoWindow.open(map, marker);
               });
