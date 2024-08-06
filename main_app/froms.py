@@ -29,6 +29,24 @@ class SignUpForm(UserCreationForm):
         fields = ("username", "email", "password1", "password2")
 
 
+class ImagePreviewWidgetTrip(forms.RadioSelect):
+    def create_option(
+        self, name, value, label, selected, index, subindex=None, attrs=None
+    ):
+        option = super().create_option(
+            name, value, label, selected, index, subindex, attrs
+        )
+        if value:
+            photo_id = value.value if hasattr(value, "value") else value
+            try:
+                photo = TripPhoto.objects.get(pk=photo_id)
+                option["label"] = mark_safe(
+                    f'<img src="{photo.url}" alt="{photo.name}" style="width: 100px; height: 100px; object-fit: cover;">'
+                )
+            except TripPhoto.DoesNotExist:
+                pass
+        return option
+
 class TripForm(forms.ModelForm):
     name = forms.CharField(
         widget=forms.TextInput(attrs={"placeholder": "Give your trip a name!"}),
@@ -38,12 +56,12 @@ class TripForm(forms.ModelForm):
         widget=forms.TextInput(attrs={"placeholder": "Where is your trip?"}),
         label="Location",
     )
-
-    class TripForm(forms.Form):
-        trip_photo = forms.ModelChoiceField(
-            queryset=TripPhoto.objects.all(), label="Trip Photo"
-        )
-
+    trip_photo = forms.ModelChoiceField(
+        queryset=TripPhoto.objects.all(),
+        widget=ImagePreviewWidgetTrip,
+        empty_label=None,
+        label="Choose a Trip photo",
+    )
     public = forms.BooleanField(
         required=False, initial=False, label="Make this trip public"
     )
@@ -76,7 +94,7 @@ class SuitcaseItemForm(forms.ModelForm):
         }
 
 
-class ImagePreviewWidget(forms.RadioSelect):
+class ImagePreviewWidgetProfile(forms.RadioSelect):
     def create_option(
         self, name, value, label, selected, index, subindex=None, attrs=None
     ):
@@ -98,7 +116,7 @@ class ImagePreviewWidget(forms.RadioSelect):
 class ProfilePhotoForm(forms.Form):
     profile_photo = forms.ModelChoiceField(
         queryset=UserPhoto.objects.all(),
-        widget=ImagePreviewWidget,
+        widget=ImagePreviewWidgetProfile,
         empty_label=None,
         label="Choose a profile photo",
     )
