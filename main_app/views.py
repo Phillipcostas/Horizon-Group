@@ -58,7 +58,7 @@ def user_interest(request):
             selected_4 = form.cleaned_data["question_4"]
             userProfile.interest4 = selected_4
             userProfile.save()
-            return redirect("trip_list")
+            return redirect("profile_photo")
         else:
             error_message = "Plese fill out the form before moving forward."
             return redirect("/")
@@ -290,3 +290,19 @@ def send_invitation(request, trip_id):
         form = InvitationForm()
     return render(request, "send_invitation.html", {"form": form, "trip": trip})
 
+def user_photo(request):
+    userProfile = UserProfile.objects.get(user=request.user)
+    error_message = ""
+    form = ProfilePhotoForm(request.POST)
+    if request.method == "POST":
+        form = ProfilePhotoForm(request.POST)
+        if form.is_valid():
+            selected_photo = form.cleaned_data["profile_photo"]
+            userProfile.profile_photo = selected_photo
+            userProfile.save()
+            return redirect("trip_list")
+    else:
+        form = ProfilePhotoForm()
+
+    context = {"form": form, "error_message": error_message}
+    return render(request, "registration/user_photo.html", context)

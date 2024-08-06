@@ -1,7 +1,7 @@
 from django.urls import path, include
 from . import views
 from django.contrib.auth.models import User
-from .views import AddTrip, TripListView, TripDetailView, AddItinerary, send_invitation
+from .views import AddTrip, TripListView, TripDetailView, AddItinerary, send_invitation, user_photo
 
 urlpatterns = [
     path("", views.Home.as_view(), name="home"),
@@ -38,4 +38,5 @@ urlpatterns = [
     ),
     path("accounts/signup/questions/", views.user_interest, name="interest"),
     path("profile/", views.profile, name="profile"),
+    path("accounts/signup/questions/profile-photo/", views.user_photo, name="profile_photo"),
 ]
