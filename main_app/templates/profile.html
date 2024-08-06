@@ -1,29 +1,78 @@
-{% extends 'base.html' %} 
-{% block title %}Profile{% endblock %} 
+{% extends 'base.html' %}
+{% block title %}Profile{% endblock %}
 {% block content %}
-<div class="profile-container">
-  <h1 class="profile-header">Welcome {{userProfile.name}}</h1>
-  <div class="profile-image">
-    {% if userProfile.profile_photo %}
-      <img src="{{ userProfile.profile_photo.url }}" alt="picture of {{userProfile.name}}" height="200" width="200">
-    {% else %}
-      <p>No profile photo set</p>
-    {% endif %}
-  </div>
-  <div class="profile-info">
-    <p><strong>Name:</strong> {{userProfile.name}}</p>
-    <p><strong>Email:</strong> {{userProfile.email}}</p>
-  </div>
-  {% if not userProfile.profile_photo %}
-  <div class="profile-action">
-    <form method="post">
-      {% csrf_token %}
-      <div class="form-group">
-        {{ form.as_p }}
+<style>
+  .profile-container {
+    background-color: #f8f9fa;
+    border-radius: 8px;
+    padding: 20px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  }
+
+  .profile-header {
+    font-size: 2rem;
+    color: var(--yellow-color);
+  }
+
+  .profile-image img {
+    border: 4px solid var(--yellow-color);
+    border-radius: 50%;
+    width: 200px;
+    height: 200px;
+    object-fit: cover;
+  }
+
+  .profile-info {
+    font-size: 1.1rem;
+    margin-top: 10px;
+  }
+
+  .profile-action {
+    margin-top: 20px;
+  }
+
+  .btn-yellow {
+    background-color: var(--yellow-color);
+    border-color: var(--yellow-color);
+    color: black;
+  }
+
+  .btn-yellow:hover {
+    background-color: #e0a800;
+    border-color: #d89e00;
+  }
+</style>
+
+<div class="container profile-container mt-5">
+  <h1 class="profile-header text-center mb-4">Welcome, {{ userProfile.name }}</h1>
+  <div class="row">
+    <div class="col-md-4 text-center">
+      <div class="profile-image">
+        {% if userProfile.profile_photo %}
+          <img src="{{ userProfile.profile_photo.url }}" alt="Profile picture of {{ userProfile.name }}" class="img-fluid rounded-circle">
+        {% else %}
+          <p class="text-muted">No profile photo set</p>
+        {% endif %}
       </div>
-      <button type="submit" class="btn btn-yellow" style="font-size: 1rem; width: 100%;">Add Profile Photo</button>
-    </form>
+    </div>
+    <div class="col-md-8">
+      <div class="profile-info">
+        <p><strong>Name:</strong> {{ userProfile.name }}</p>
+        <p><strong>Email:</strong> {{ userProfile.email }}</p>
+      </div>
+      {% if not userProfile.profile_photo %}
+        <div class="profile-action mt-4">
+          <form method="post" enctype="multipart/form-data">
+            {% csrf_token %}
+            <div class="form-group">
+              {{ form.as_p }}
+            </div>
+            <button type="submit" class="btn btn-yellow" style="font-size: 1rem; width: 100%;">Add Profile Photo</button>
+          </form>
+        </div>
+      {% endif %}
+    </div>
   </div>
-  {% endif %}
 </div>
 {% endblock %}
+

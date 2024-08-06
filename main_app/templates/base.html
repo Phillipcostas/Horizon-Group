@@ -1,4 +1,4 @@
-{% load static %} 
+{% load static %}
 
 <!DOCTYPE html>
 <html lang="en">
@@ -14,13 +14,13 @@
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css" />
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" />
   <link rel="stylesheet" href="{% static 'css/style.css' %}" />
-  <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+  <link href="https://stackpath.bootstrapcdn.com/bootstrap/5.3.0/css/bootstrap.min.css" rel="stylesheet">
   <link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.9.0/css/bootstrap-datepicker.min.css" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
 
-  
   <style>
     :root {
-      --yellow-color: #ffc107; /* Bootstrap's text-warning color */
+      --yellow-color: #ffc107; 
     }
     .logo-icon {
       background-color: var(--yellow-color);
@@ -33,14 +33,17 @@
       margin-right: 5px;
     }
     .navbar-nav-center {
-      position: absolute;
-      left: 50%;
-      transform: translateX(-50%);
+      display: flex;
+      justify-content: center;
+      width: 100%;
     }
     .btn-yellow {
       background-color: var(--yellow-color);
       border-color: var(--yellow-color);
       color: black;
+    }
+    .navbar {
+      z-index: 1030; 
     }
   </style>
 </head>
@@ -76,17 +79,17 @@
         <ul class="navbar-nav ms-auto mb-2 mb-lg-0">
           {% if user.is_authenticated %}
           <li class="nav-item">
-            <a class="nav-link link-light" href="{% url 'logout' %}">Log Out</a>
+            <a class="nav-link link-light" href="{% url 'logout' %}">LogOut</a>
             <form id="logout-form" method="post" action="{% url 'logout' %}" style="display: none;">
               {% csrf_token %}
             </form>
           </li>
           {% else %}
           <li class="nav-item">
-            <a class="nav-link text-light" href="{% url 'signup' %}">Sign Up</a>
+            <a class="nav-link text-light" href="{% url 'signup' %}">SignUp</a>
           </li>
           <li class="nav-item">
-            <a class="nav-link text-light" href="{% url 'login' %}">Sign In</a>
+            <a class="nav-link text-light" href="{% url 'login' %}">SignIn</a>
           </li>
           {% endif %}
         </ul>
