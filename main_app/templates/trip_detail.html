@@ -12,30 +12,31 @@
   <h4 class="text-center" style="font-size: 1.2rem;">Number of Days: {{ num_days }}</h4>
   
   {% if can_edit %}
-  <a href="{% url 'send_invitation' trip.id %}" class="btn btn-primary mb-3">Invite Users</a>
+  <div class="text-center mb-3">
+    <a href="{% url 'send_invitation' trip.id %}" class="btn btn-primary">Invite Users</a>
+  </div>
   {% endif %}
 
   <div class="booking-background" style="background-image: url('{{trip.trip_photo.url}}'); background-size: cover; background-position: center; background-repeat: no-repeat; border-radius: 10px; padding: 20px; margin: 20px 0;">
     <div class="overlay" style="background: rgba(255, 255, 255, 0.8); padding: 20px; border-radius: 10px;">
       <div class="row">
         {% for day in num_days|to_range %}
-        <div class="col-6 col-md-3 col-lg-2 mb-4">
-          <div class="card shadow-sm bg-light" style="border-radius: 10px; height: 100%;">
+        <div class="col-12 col-md-6 col-lg-4 mb-4">
+          <div class="card shadow-sm bg-light" style="border-radius: 10px; height: 200px;">
             <div class="card-body d-flex flex-column justify-content-between">
-              <h5 class="card-title" style="font-size: 1.2rem;">Day {{ day }}</h5>
-              <ul class="list-group mb-3">
+              <h5 class="card-title" style="font-size: 1rem;">Day {{ day }}</h5> 
+              <ul class="list-group mb-3" style="flex-grow: 1; overflow-y: auto; max-height: 60px;"> 
                 {% for itinerary in itineraries_by_day|dict_key:day %}
                 <li class="list-group-item bg-light">{{ itinerary.name }}</li>
                 {% endfor %}
               </ul>
               {% if can_edit %}
-              <form method="post" action="{% url 'add_itinerary' trip.pk day %}">
+              <form method="post" action="{% url 'add_itinerary' trip.pk day %}" class="d-flex align-items-center">
                 {% csrf_token %}
-                <div class="form-group">
-                  <label for="itinerary_name_{{ day }}" style="font-size: 0.9rem;">Itinerary Name</label>
-                  <input type="text" class="form-control" id="itinerary_name_{{ day }}" name="itinerary_name" placeholder="Enter itinerary">
+                <div class="form-group mb-0" style="flex-grow: 1;">
+                  <input type="text" class="form-control" id="itinerary_name_{{ day }}" name="itinerary_name" placeholder="Enter itinerary" style="font-size: 0.8rem;">
                 </div>
-                <button type="submit" class="btn btn-yellow" style="font-size: 0.8rem;">Add</button>
+                <button type="submit" class="btn btn-yellow ml-2" style="font-size: 0.8rem; height: fit-content;">Add</button>
               </form>
               {% endif %}
             </div>
@@ -45,31 +46,31 @@
       </div>
     </div>
   </div>
-</div>
-<div class="comments-section mt-5">
-  <h3>Comments</h3>
-  <ul class="list-group">
-    {% for comment in comments %}
-    <li class="list-group-item">
-      <strong>{{ comment.user.username }}</strong>
-      <span class="text-muted" style="font-size: 0.8rem;">{{ comment.created_at }}</span>
-      <p>{{ comment.content }}</p>
-    </li>
-    {% endfor %}
-  </ul>
+  
+  <div class="comments-section mt-5">
+    <h3>Comments</h3>
+    <ul class="list-group">
+      {% for comment in comments %}
+      <li class="list-group-item">
+        <strong>{{ comment.user.username }}</strong>
+        <span class="text-muted" style="font-size: 0.8rem;">{{ comment.created_at }}</span>
+        <p>{{ comment.content }}</p>
+      </li>
+      {% endfor %}
+    </ul>
 
-  {% if user.is_authenticated and can_comment %}
-  <form method="post" class="mt-4">
-    {% csrf_token %}
-    {{ comment_form.as_p }}
-    <button type="submit" class="btn btn-primary">Add Comment</button>
-  </form>
-  {% elif not can_comment %}
-  <p class="text-center mt-4">You do not have permission to comment on this trip.</p>
-  {% else %}
-  <p class="text-center mt-4">Please <a href="{% url 'login' %}">log in</a> to comment.</p>
-  {% endif %}
-</div>
+    {% if user.is_authenticated and can_comment %}
+    <form method="post" class="mt-4">
+      {% csrf_token %}
+      {{ comment_form.as_p }}
+      <button type="submit" class="btn btn-primary">Add Comment</button>
+    </form>
+    {% elif not can_comment %}
+    <p class="text-center mt-4">You do not have permission to comment on this trip.</p>
+    {% else %}
+    <p class="text-center mt-4">Please <a href="{% url 'login' %}">log in</a> to comment.</p>
+    {% endif %}
+  </div>
 </div>
 
 <style>
@@ -109,37 +110,3 @@
 {% endblock %}
 
 
-{% block footer %}
-<footer class="bg-dark text-white py-5">
-  <div class="container">
-      <div class="row">
-          <div class="col-md-4 mb-4 mb-md-0">
-              <h5 class="mb-3">Horizon</h5>
-              <p>Discover the best travel experiences with Horizon. From luxury resorts to adventure trips, we have it all.</p>
-          </div>
-          <div class="col-md-4 mb-4 mb-md-0">
-              <h5 class="mb-3">Quick Links</h5>
-              <ul class="list-unstyled">
-                  <li><a href="#" class="text-white">About</a></li>
-                  <li><a href="#" class="text-white">Terms</a></li>
-                  <li><a href="#" class="text-white">Privacy</a></li>
-                  <li><a href="#" class="text-white">Career</a></li>
-                  <li><a href="#" class="text-white">Contact Us</a></li>
-                  <li><a href="#" class="text-white">Cookies</a></li>
-              </ul>
-          </div>
-          <div class="col-md-4">
-              <h5 class="mb-3">Follow Us</h5>
-              <div>
-                  <a href="#" class="social-icon" style="background-color: #3b5998;"><i class="fab fa-facebook-f"></i></a>
-                  <a href="#" class="social-icon" style="background-color: #E1306C;"><i class="fab fa-instagram"></i></a>
-                  <a href="#" class="social-icon" style="background-color: #1DA1F2;"><i class="fab fa-twitter"></i></a>
-                  <a href="#" class="social-icon" style="background-color: #0077B5;"><i class="fab fa-linkedin-in"></i></a>
-              </div>
-          </div>
-      </div>
-      <hr class="my-4">
-      <p class="text-center mb-0">Copyright © 2024 Horizon. Built by Cool 8</p>
-  </div>
-</footer>
-{% endblock %}
