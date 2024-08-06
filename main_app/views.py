@@ -3,15 +3,28 @@ from django.contrib.auth.views import LoginView
 from django.contrib.auth import login
 from django.contrib.auth.forms import UserCreationForm
 from django.contrib.auth.decorators import login_required
-from .models import UserProfile, Trip, Itinerary, SuitcaseItem, UserPhoto, TripPhoto, UserInterest, Invitation
+from .models import (
+    UserProfile,
+    Trip,
+    Itinerary,
+    SuitcaseItem,
+    TripPhoto,
+)
 from django.conf import settings
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.views.generic import View
-from .froms import TripForm, SuitcaseItemForm, UserInterestForm, ProfilePhotoForm, UserInterestForm, InvitationForm, CommentForm
+from .froms import (
+    TripForm,
+    SuitcaseItemForm,
+    ProfilePhotoForm,
+    UserInterestForm,
+    InvitationForm,
+    CommentForm,
+)
 from datetime import date, timedelta
-from collections import defaultdict
 from django.contrib import messages
 from django.http import HttpResponseForbidden
+
 
 def about(request):
     return render(request, "base.html")
@@ -25,7 +38,6 @@ def map(request):
 def trip_index(request):
     trips = Trip.objects.filter(user=request.user)
     return render(request, "trip.html", {"trips": trips})
-
 
 
 def user_interest(request):
@@ -46,15 +58,15 @@ def user_interest(request):
             selected_4 = form.cleaned_data["question_4"]
             userProfile.interest4 = selected_4
             userProfile.save()
-            return redirect('/')
+            return redirect("trip_list")
         else:
             error_message = "Plese fill out the form before moving forward."
-            return redirect('/')
+            return redirect("/")
     else:
         form = UserInterestForm()
-    
+
     context = {"form": form, "error_message": error_message}
-    return render(request, 'registration/interestQuestions.html', context)
+    return render(request, "registration/interestQuestions.html", context)
 
 
 def signup(request):
@@ -66,7 +78,7 @@ def signup(request):
             login(request, user)
             userProfile = UserProfile.objects.create(user=user, name=user.username)
             userProfile.save()
-            return redirect("interest")
+            return render(request, "registration/interestQuestions.html")
         else:
             error_message = "Invalid sign up - try again"
     else:
@@ -77,46 +89,58 @@ def signup(request):
 
 @login_required
 def suitcase_view(request):
-    if request.method == 'POST':
+    if request.method == "POST":
         form = SuitcaseItemForm(request.POST)
         if form.is_valid():
             item = form.save(commit=False)
             item.user = request.user
             item.save()
-            return redirect('suitcase')
+            return redirect("suitcase")
     else:
         form = SuitcaseItemForm()
 
     items = SuitcaseItem.objects.filter(user=request.user)
-    categories = ['Essentials', 'Toiletries', 'Speciality Clothes', 'Lounge Wear', 'Tech', 'Documents' ]
-    categorized_items = {category: items.filter(category=category) for category in categories}
-    context = {'form': form, 'categorized_items': categorized_items}
-    return render(request, 'suitcase.html', context)
+    categories = [
+        "Essentials",
+        "Toiletries",
+        "Speciality Clothes",
+        "Lounge Wear",
+        "Tech",
+        "Documents",
+    ]
+    categorized_items = {
+        category: items.filter(category=category) for category in categories
+    }
+    context = {"form": form, "categorized_items": categorized_items}
+    return render(request, "suitcase.html", context)
+
 
 @login_required
 def toggle_packed_status(request, pk):
-    if request.method == 'POST':
+    if request.method == "POST":
         item = get_object_or_404(SuitcaseItem, pk=pk, user=request.user)
         item.packed = not item.packed
         item.save()
-        return redirect('suitcase')
+        return redirect("suitcase")
+
 
 @login_required
 def update_suitcase_item(request, pk):
-    if request.method == 'POST':
+    if request.method == "POST":
         item = get_object_or_404(SuitcaseItem, pk=pk, user=request.user)
-        quantity = request.POST.get('quantity')
+        quantity = request.POST.get("quantity")
         if quantity.isdigit():
             item.quantity = int(quantity)
             item.save()
-        return redirect('suitcase')
+        return redirect("suitcase")
+
 
 @login_required
 def remove_suitcase_item(request, pk):
-    if request.method == 'POST':
+    if request.method == "POST":
         item = get_object_or_404(SuitcaseItem, pk=pk, user=request.user)
         item.delete()
-        return redirect('suitcase')
+        return redirect("suitcase")
 
 
 class Home(LoginRequiredMixin, LoginView):
@@ -170,10 +194,11 @@ class TripListView(LoginRequiredMixin, View):
     def get(self, request):
         user_trips = Trip.objects.filter(user=request.user)
         public_trips = Trip.objects.filter(public=True).exclude(user=request.user)
-        return render(request, 'trip.html', {
-            'user_trips': user_trips,
-            'public_trips': public_trips
-        })
+        return render(
+            request,
+            "trip.html",
+            {"user_trips": user_trips, "public_trips": public_trips},
+        )
 
 
 class TripDetailView(LoginRequiredMixin, View):
@@ -187,47 +212,45 @@ class TripDetailView(LoginRequiredMixin, View):
         comment_form = CommentForm()
         can_comment = trip.user == request.user or trip.can_comment(request.user)
         can_edit = trip.user == request.user
-        return render(request, 'trip_detail.html', {
-            'trip': trip,
-            'num_days': num_days,
-            'itineraries_by_day': itineraries_by_day,
-            'comments': comments,
-            'comment_form': comment_form,
-            'can_comment': can_comment,
-            'can_edit': can_edit
-        })
+        return render(
+            request,
+            "trip_detail.html",
+            {
+                "trip": trip,
+                "num_days": num_days,
+                "itineraries_by_day": itineraries_by_day,
+                "comments": comments,
+                "comment_form": comment_form,
+                "can_comment": can_comment,
+                "can_edit": can_edit,
+            },
+        )
 
     def post(self, request, pk):
         trip = get_object_or_404(Trip, pk=pk)
         if trip.user != request.user and not trip.can_comment(request.user):
-            return redirect('trip_detail', pk=pk)
+            return redirect("trip_detail", pk=pk)
         comment_form = CommentForm(request.POST)
         if comment_form.is_valid():
             comment = comment_form.save(commit=False)
             comment.trip = trip
             comment.user = request.user
             comment.save()
-        return redirect('trip_detail', pk=pk)
+        return redirect("trip_detail", pk=pk)
 
 
 class AddItinerary(LoginRequiredMixin, View):
     def post(self, request, pk, day):
         trip = get_object_or_404(Trip, pk=pk)
         if trip.user != request.user:
-            return HttpResponseForbidden("You are not allowed to add itineraries to this trip.")
+            return HttpResponseForbidden(
+                "You are not allowed to add itineraries to this trip."
+            )
         itinerary_name = request.POST.get("itinerary_name")
         if itinerary_name:
             Itinerary.objects.create(trip=trip, day=day, name=itinerary_name)
 
-        return redirect('trip_detail', pk=pk)
-    
-def user_interest(request):
-    if request.method == "POST":
-        form = UserInterestForm(request.POST)
-        if form.is_valid():
-            user_profile = UserProfile.objects.get(user=request.user)
-            user_profile = form.save()
-            trip = form.save(commit=False)
+        return redirect("trip_detail", pk=pk)
 
 
 def profile(request):
@@ -249,17 +272,21 @@ def profile(request):
     }
     return render(request, "profile.html", context)
 
+
 @login_required
 def send_invitation(request, trip_id):
     trip = get_object_or_404(Trip, id=trip_id, user=request.user)
-    if request.method == 'POST':
+    if request.method == "POST":
         form = InvitationForm(request.POST)
         if form.is_valid():
             invitation = form.save(commit=False)
             invitation.trip = trip
             invitation.save()
-            messages.success(request, f"Invitation sent to {invitation.invited_user.username}")
-            return redirect('trip_detail', pk=trip.id)
+            messages.success(
+                request, f"Invitation sent to {invitation.invited_user.username}"
+            )
+            return redirect("trip_detail", pk=trip.id)
     else:
         form = InvitationForm()
-    return render(request, 'send_invitation.html', {'form': form, 'trip': trip})
+    return render(request, "send_invitation.html", {"form": form, "trip": trip})
+
