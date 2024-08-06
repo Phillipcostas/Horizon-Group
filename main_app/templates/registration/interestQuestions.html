@@ -43,6 +43,10 @@
             <option value="Almost Never">Almost Never</option>
         </select>
     </div>
+    {% csrf_token %}
+    <div class="form-group">
+        {{ ProfilePhotoform.as_p }}
+    </div>
     <button type="submit" class="btn btn-primary">Submit</button>
   </form>
 </div>

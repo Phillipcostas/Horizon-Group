@@ -42,36 +42,22 @@
     border-color: #d89e00;
   }
 </style>
-
-<div class="container profile-container mt-5">
-  <h1 class="profile-header text-center mb-4">Welcome, {{ userProfile.name }}</h1>
-  <div class="row">
-    <div class="col-md-4 text-center">
-      <div class="profile-image">
-        {% if userProfile.profile_photo %}
-          <img src="{{ userProfile.profile_photo.url }}" alt="Profile picture of {{ userProfile.name }}" class="img-fluid rounded-circle">
-        {% else %}
-          <p class="text-muted">No profile photo set</p>
-        {% endif %}
-      </div>
-    </div>
-    <div class="col-md-8">
-      <div class="profile-info">
-        <p><strong>Name:</strong> {{ userProfile.name }}</p>
-        <p><strong>Email:</strong> {{ userProfile.email }}</p>
-      </div>
-      {% if not userProfile.profile_photo %}
-        <div class="profile-action mt-4">
-          <form method="post" enctype="multipart/form-data">
-            {% csrf_token %}
-            <div class="form-group">
-              {{ form.as_p }}
-            </div>
-            <button type="submit" class="btn btn-yellow" style="font-size: 1rem; width: 100%;">Add Profile Photo</button>
-          </form>
-        </div>
-      {% endif %}
-    </div>
+<div class="profile-container">
+  <h1 class="profile-header">Welcome {{userProfile.name}}</h1>
+  <div class="profile-image">
+    {% if userProfile.profile_photo %}
+      <img src="{{ userProfile.profile_photo.url }}" alt="picture of {{userProfile.name}}" height="200" width="200">
+    {% else %}
+      <p>No profile photo set</p>
+    {% endif %}
+  </div>
+  <div class="profile-info">
+    <p><strong>Name:</strong> {{userProfile.name}}</p>
+    <p><strong>Email:</strong> {{userProfile.email}}</p>
+    <p><strong>You like to travel via:</strong> {{userProfile.interest1}}</p>
+    <p><strong>During your travels you look forward too:</strong> {{userProfile.interest2}} activities</p>
+    <p><strong>Your preferred food:</strong> {{userProfile.interest3}}</p>
+    <p><strong>You travel:</strong> {{userProfile.interest4}}</p>
   </div>
 </div>
 {% endblock %}
