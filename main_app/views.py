@@ -49,14 +49,10 @@ def user_interest(request):
     if request.method == "POST":
         if form.is_valid():
             user_interest = form.save(commit=False)
-            selected_1 = form.cleaned_data["question_1"]
-            userProfile.interest1 = selected_1
-            selected_2 = form.cleaned_data["question_2"]
-            userProfile.interest2 = selected_2
-            selected_3 = form.cleaned_data["question_3"]
-            userProfile.interest3 = selected_3
-            selected_4 = form.cleaned_data["question_4"]
-            userProfile.interest4 = selected_4
+            userProfile.interest1 = form.cleaned_data["question_1"]
+            userProfile.interest2 = form.cleaned_data["question_2"]
+            userProfile.interest3 = form.cleaned_data["question_3"]
+            userProfile.interest4 = form.cleaned_data["question_4"]
             userProfile.save()
             return redirect("trip_list")
         else:
@@ -289,4 +285,3 @@ def send_invitation(request, trip_id):
     else:
         form = InvitationForm()
     return render(request, "send_invitation.html", {"form": form, "trip": trip})
-
