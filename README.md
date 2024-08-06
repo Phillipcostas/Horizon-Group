@@ -1,7 +1,5 @@
 # Horizon - Virtual Travel Assistance App
 
-[Check out out website here!](https://horizon-acrons-99cbd545c102.herokuapp.com)
-
 Welcome to Horizon, your ultimate virtual travel assistant. Horizon is designed to help you manage your travel plans effortlessly, providing features to track itineraries, explore destinations, and receive timely notifications and updates. This README file will guide you through the setup and usage of the Horizon app.
 
 ### <img src="https://github.githubassets.com/images/modules/logos_page/GitHub-Mark.png" alt="GitHub Logo" width="50" height="50"> Git: 
@@ -34,15 +32,11 @@ Welcome to Horizon, your ultimate virtual travel assistant. Horizon is designed 
 
 ### Prerequisites
 
-Ensure you have the following technologies installed:
+Ensure you have the following installed:
 
 - Python 3.7+
 - Django 4.2+
 - Virtualenv
-- HTML
-- bootstrapV5
-- CSS
-- JavaScript
 
 ### Steps
 
@@ -122,12 +116,15 @@ git push origin feature/your-feature-name.
 
 Please make sure to update tests as appropriate.
 
+### Stretch Goals
+
+1. Search for trips and users
+2. Invite Notifications
+3. Interactive Flight Search/Tracker
+4. Social Feature to collaborate on itinerary and trips with friends
+
 ### License
 This project is licensed under the MIT License - see the LICENSE file for details.
 
 ### Contact
 For questions, feedback, or support, please contact us at support@horizonapp.com.
-
-Thank you for using Horizon! We hope it enhances your travel experiences.
-
-Feel free to modify this README file to better suit the specific details and requirements of your project.
