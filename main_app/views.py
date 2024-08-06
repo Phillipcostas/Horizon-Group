@@ -49,14 +49,10 @@ def user_interest(request):
     if request.method == "POST":
         if form.is_valid():
             user_interest = form.save(commit=False)
-            selected_1 = form.cleaned_data["question_1"]
-            userProfile.interest1 = selected_1
-            selected_2 = form.cleaned_data["question_2"]
-            userProfile.interest2 = selected_2
-            selected_3 = form.cleaned_data["question_3"]
-            userProfile.interest3 = selected_3
-            selected_4 = form.cleaned_data["question_4"]
-            userProfile.interest4 = selected_4
+            userProfile.interest1 = form.cleaned_data["question_1"]
+            userProfile.interest2 = form.cleaned_data["question_2"]
+            userProfile.interest3 = form.cleaned_data["question_3"]
+            userProfile.interest4 = form.cleaned_data["question_4"]
             userProfile.save()
             return redirect("profile_photo")
         else:
@@ -256,19 +252,8 @@ class AddItinerary(LoginRequiredMixin, View):
 def profile(request):
     userProfile = UserProfile.objects.get(user=request.user)
 
-    if request.method == "POST":
-        form = ProfilePhotoForm(request.POST)
-        if form.is_valid():
-            selected_photo = form.cleaned_data["profile_photo"]
-            userProfile.profile_photo = selected_photo
-            userProfile.save()
-            return redirect("profile")
-    else:
-        form = ProfilePhotoForm()
-
     context = {
         "userProfile": userProfile,
-        "form": form,
     }
     return render(request, "profile.html", context)
 
