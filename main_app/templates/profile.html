@@ -18,16 +18,5 @@
     <p><strong>Your preferred food:</strong> {{userProfile.interest3}}</p>
     <p><strong>You travel:</strong> {{userProfile.interest4}}</p>
   </div>
-  {% if not userProfile.profile_photo %}
-  <div class="profile-action">
-    <form method="post">
-      {% csrf_token %}
-      <div class="form-group">
-        {{ form.as_p }}
-      </div>
-      <button type="submit" class="btn btn-yellow" style="font-size: 1rem; width: 100%;">Add Profile Photo</button>
-    </form>
-  </div>
-  {% endif %}
 </div>
 {% endblock %}
