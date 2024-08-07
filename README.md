@@ -116,12 +116,15 @@ git push origin feature/your-feature-name.
 
 Please make sure to update tests as appropriate.
 
+### Stretch Goals
+
+1. Search for trips and users
+2. Invite Notifications
+3. Interactive Flight Search/Tracker
+4. Social Feature to collaborate on itinerary and trips with friends
+
 ### License
 This project is licensed under the MIT License - see the LICENSE file for details.
 
 ### Contact
 For questions, feedback, or support, please contact us at support@horizonapp.com.
-
-Thank you for using Horizon! We hope it enhances your travel experiences.
-
-Feel free to modify this README file to better suit the specific details and requirements of your project.

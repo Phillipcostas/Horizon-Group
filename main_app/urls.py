@@ -1,11 +1,17 @@
 from django.urls import path, include
 from . import views
 from django.contrib.auth.models import User
-from .views import AddTrip, TripListView, TripDetailView, AddItinerary, send_invitation, user_photo
+from .views import (
+    AddTrip,
+    TripListView,
+    TripDetailView,
+    AddItinerary,
+    send_invitation,
+)
 
 urlpatterns = [
     path("", views.Home.as_view(), name="home"),
-    path("map", views.map, name="map"),
+    path("map/", views.map, name="map"),
     path("trip/", TripListView.as_view(), name="trip_list"),
     path("addTrip", AddTrip.as_view(), name="addTrip"),
     path("trip/<int:pk>/", TripDetailView.as_view(), name="trip_detail"),
@@ -38,5 +44,9 @@ urlpatterns = [
     ),
     path("accounts/signup/questions/", views.user_interest, name="interest"),
     path("profile/", views.profile, name="profile"),
-    path("accounts/signup/questions/profile-photo/", views.user_photo, name="profile_photo"),
+    path(
+        "accounts/signup/questions/profile-photo/",
+        views.user_photo,
+        name="profile_photo",
+    ),
 ]
