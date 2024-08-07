@@ -9,17 +9,34 @@
   </div>
   <div class="row mb-4">
     <div class="col-lg-6 mx-auto">
-      <div id="search-area" class="input-group">
+      <div id="search-area" class="input-group mb-3">
         <input type="text" id="search-input" class="form-control" placeholder="Enter a location">
         <button class="btn btn-yellow ms-2" onclick="searchPlaces()">Search</button>
       </div>
     </div>
   </div>
-  <div id="map" class="map-container"></div>
+  <div class="row">
+    <div class="col-lg-8">
+      <div id="map" class="map-container"></div>
+    </div>
+    <div class="col-lg-4">
+      <div id="results" class="results-container shadow-lg">
+        <h4 class="font-weight-bold mb-3">Search Results</h4>
+        <div id="results-list">
+          <div class="result-item">
+            <img src="https://via.placeholder.com/400x150" alt="Place Image" class="result-image">
+            <h5>Place Name</h5>
+            <p>123 Example Street, City, Country</p>
+            <a href="https://www.google.com/maps/place/?q=place_id:PLACE_ID" target="_blank">View on Google Maps</a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
 </div>
 
 <script>
-  let map; 
+  let map;
   let userLocation;
   let markers = [];
 
@@ -79,6 +96,8 @@
         query: query
       };
       service.textSearch(request, (results, status) => {
+        const resultsList = document.getElementById("results-list");
+        resultsList.innerHTML = '';
         if (status === google.maps.places.PlacesServiceStatus.OK) {
           for (let i = 0; i < results.length; i++) {
             const place = results[i];
@@ -98,6 +117,16 @@
               });
               infoWindow.open(map, marker);
             });
+            
+            const resultItem = document.createElement("div");
+            resultItem.className = "result-item";
+            resultItem.innerHTML = `
+              <img src="${place.photos ? place.photos[0].getUrl({ maxWidth: 400, maxHeight: 150 }) : 'https://via.placeholder.com/400x150'}" alt="Place Image" class="result-image">
+              <h5><strong>${place.name}</strong></h5>
+              <p>${place.formatted_address}</p>
+              <a href="https://www.google.com/maps/place/?q=place_id:${place.place_id}" target="_blank">View on Google Maps</a>
+            `;
+            resultsList.appendChild(resultItem);
           }
         } else {
           console.error("Error searching for places:", status);
@@ -119,10 +148,62 @@
   }
 
   .map-container {
-    height: 400px;
+    height: 500px;
     width: 100%;
     border: 1px solid #ccc;
     border-radius: 0.5rem;
+  }
+
+  .results-container {
+    height: 500px;
+    width: 100%;
+    border-radius: 1rem;
+    overflow-y: auto;
+    padding: 1.5rem;
+    box-sizing: border-box;
+    background: #f9f9f9;
+  }
+
+  .result-item {
+    background: #fff;
+    border: 1px solid #ddd;
+    border-radius: 0.75rem;
+    padding: 1rem;
+    margin-bottom: 1rem;
+    transition: box-shadow 0.3s ease, background-color 0.3s ease;
+  }
+
+  .result-item:hover {
+    background-color: #f0f0f0;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+  }
+
+  .result-item h5 {
+    font-size: 1.25rem;
+    font-weight: 600;
+    margin-bottom: 0.5rem;
+  }
+
+  .result-item p {
+    margin: 0.5rem 0;
+    color: #555;
+  }
+
+  .result-item a {
+    color: #007bff;
+    text-decoration: none;
+  }
+
+  .result-item a:hover {
+    text-decoration: underline;
+  }
+
+  .result-image {
+    width: 100%;
+    height: 150px;
+    object-fit: cover;
+    border-radius: 0.5rem;
+    margin-bottom: 1rem;
   }
 
   #search-input {
@@ -137,18 +218,20 @@
   }
 
   .social-icon {
-    display: inline-block;
     width: 40px;
     height: 40px;
-    line-height: 40px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
     border-radius: 50%;
-    text-align: center;
-    margin-right: 10px;
     color: #fff;
+    font-size: 18px;
+    margin: 0 8px;
+    transition: background-color 0.3s ease;
   }
 
   .social-icon:hover {
-    text-decoration: none;
+    opacity: 0.8;
   }
 </style>
 {% endblock %}
@@ -158,8 +241,8 @@
   <div class="container">
     <div class="row">
       <div class="col-md-4 mb-4 mb-md-0">
-        <h5 class="mb-3">Horizon</h5>
-        <p>Discover the best travel experiences with Horizon. From luxury resorts to adventure trips, we have it all.</p>
+        <h5 class="mb-3">Horizon Travel</h5>
+        <p>Discover the best travel experiences with Horizon Travel. From luxury resorts to adventure trips, we have it all.</p>
       </div>
       <div class="col-md-4 mb-4 mb-md-0">
         <h5 class="mb-3">Quick Links</h5>
@@ -176,14 +259,15 @@
         <h5 class="mb-3">Follow Us</h5>
         <div>
           <a href="#" class="social-icon" style="background-color: #3b5998;"><i class="fab fa-facebook-f"></i></a>
-          <a href="#" class="social-icon" style="background-color: #E1306C;"><i class="fab fa-instagram"></i></a>
-          <a href="#" class="social-icon" style="background-color: #1DA1F2;"><i class="fab fa-twitter"></i></a>
-          <a href="#" class="social-icon" style="background-color: #0077B5;"><i class="fab fa-linkedin-in"></i></a>
+          <a href="#" class="social-icon" style="background-color: #1da1f2;"><i class="fab fa-twitter"></i></a>
+          <a href="#" class="social-icon" style="background-color: #e4405f;"><i class="fab fa-instagram"></i></a>
+          <a href="#" class="social-icon" style="background-color: #ff0000;"><i class="fab fa-youtube"></i></a>
         </div>
       </div>
     </div>
-    <hr class="my-4">
-    <p class="text-center mb-0">Copyright © 2024 Horizon. Built by Cool 8</p>
+    <div class="text-center py-3">
+      <p class="mb-0">&copy; 2024 Horizon Travel. All rights reserved.</p>
+    </div>
   </div>
 </footer>
 {% endblock %}

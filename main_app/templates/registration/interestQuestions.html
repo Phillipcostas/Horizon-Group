@@ -1,53 +1,142 @@
 {% extends 'base.html' %}
 
+{% load static %}
+
 {% block title %}Questions{% endblock %}
 
 {% block content %}
-<div class="container">
-  <h1 class="display-4">Tell Us About Yourself!</h1>
-  <form method="post" action="{% url 'interest' %}">
-    {% csrf_token %}
-    <div class="mb-3">
-        <label for="id_question_1">How do you like to travel?</label>
-        <select name="question_1" id="id_question_1" class="form-control">
-            <option value="Plane">Plane</option>
-            <option value="Train">Train</option>
-            <option value="Car">Car</option>
-            <option value="Boat">Boat</option>
-        </select>
+<div class="page-background">
+  <div class="overlay"></div>
+  <div class="content-container">
+    <div class="container my-5 p-4 bg-light rounded shadow-sm">
+      <h1 class="display-4 text-center mb-4" style="color: var(--yellow-color);">Tell Us About Yourself!</h1>
+      <form method="post" action="{% url 'interest' %}">
+        {% csrf_token %}
+        <div class="row mb-4">
+          <div class="col-md-6 mb-3">
+            <label for="id_question_1" class="form-label">How do you like to travel?</label>
+            <select name="question_1" id="id_question_1" class="form-control">
+              <option value="Plane">Plane</option>
+              <option value="Train">Train</option>
+              <option value="Car">Car</option>
+              <option value="Boat">Boat</option>
+            </select>
+          </div>
+          <div class="col-md-6 mb-3">
+            <label for="id_question_2" class="form-label">What are your main travel interests?</label>
+            <select name="question_2" id="id_question_2" class="form-control">
+              <option value="Outdoors">Outdoors</option>
+              <option value="Relaxation">Relaxation</option>
+              <option value="Live Events">Live Events</option>
+              <option value="Work">Work</option>
+            </select>
+          </div>
+        </div>
+        <div class="row mb-4">
+          <div class="col-md-6 mb-3">
+            <label for="id_question_3" class="form-label">What kind of dining experience are you looking to have on your travels?</label>
+            <select name="question_3" id="id_question_3" class="form-control">
+              <option value="Local">Local</option>
+              <option value="Fine Dining">Fine Dining</option>
+              <option value="Fast Food">Fast Food</option>
+              <option value="Vegetarian">Vegetarian</option>
+            </select>
+          </div>
+          <div class="col-md-6 mb-3">
+            <label for="id_question_4" class="form-label">How often do you find yourself traveling?</label>
+            <select name="question_4" id="id_question_4" class="form-control">
+              <option value="Very Often">Very Often</option>
+              <option value="Often">Often</option>
+              <option value="Once in a While">Once in a While</option>
+              <option value="Almost Never">Almost Never</option>
+            </select>
+          </div>
+        </div>
+        <div class="mb-4">
+          {{ ProfilePhotoform.as_p }}
+        </div>
+        <div class="text-center">
+          <button type="submit" class="btn btn-yellow">Submit</button>
+        </div>
+      </form>
     </div>
-    <div class="mb-3">
-        <label for="id_question_2">What are your main travel interests?</label>
-        <select name="question_2" id="id_question_2" class="form-control">
-            <option value="Outdoors">Outdoors</option>
-            <option value="Relaxation">Relaxation</option>
-            <option value="Live Events">Live Events</option>
-            <option value="Work">Work</option>
-        </select>
-    </div>
-    <div class="mb-3">
-        <label for="id_question_3">What kind of dining experience are you looking to have on your travels?</label>
-        <select name="question_3" id="id_question_3" class="form-control">
-            <option value="Local">Local</option>
-            <option value="Fine Dining">Fine Dining</option>
-            <option value="Fast Food">Fast Food</option>
-            <option value="Vegetarian">Vegetarian</option>
-        </select>
-    </div>
-    <div class="mb-3">
-        <label for="id_question_4">How often do you find yourself traveling?</label>
-        <select name="question_4" id="id_question_4" class="form-control">
-            <option value="Very Often">Very Often</option>
-            <option value="Often">Often</option>
-            <option value="Once in a While">Once in a While</option>
-            <option value="Almost Never">Almost Never</option>
-        </select>
-    </div>
-    {% csrf_token %}
-    <div class="form-group">
-        {{ ProfilePhotoform.as_p }}
-    </div>
-    <button type="submit" class="btn btn-primary">Submit</button>
-  </form>
+  </div>
 </div>
+
+<style>
+    .page-background {
+        position: relative;
+        background-image: url('{% static 'images/QUESTION PIC.jpg' %}');
+        background-size: cover;
+        background-position: center;
+        background-repeat: no-repeat;
+        min-height: 100vh;
+        color: #fff;
+        overflow: hidden;
+        display: flex;
+        align-items: center; 
+        justify-content: center; 
+      }
+      
+      .page-background .overlay {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background: rgba(0, 0, 0, 0.5);
+        z-index: 1;
+      }
+      
+      .content-container {
+        position: relative;
+        z-index: 2;
+        display: flex;
+        align-items: center; 
+        justify-content: center; 
+      }
+
+  .container {
+    position: relative;
+    background-color: #fff;
+    padding: 2rem;
+    border-radius: 1rem;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  }
+
+  .btn-yellow {
+    background-color: var(--yellow-color);
+    border-color: var(--yellow-color);
+    color: black;
+    transition: background-color 0.3s, color 0.3s;
+    border-radius: 0.5rem;
+  }
+
+  .btn-yellow:hover {
+    background-color: black;
+    color: var(--yellow-color);
+  }
+
+  .form-label {
+    font-weight: bold;
+    color: #333;
+  }
+
+  .form-control {
+    border: 2px solid var(--yellow-color);
+    border-radius: 0.5rem;
+    transition: border-color 0.3s, box-shadow 0.3s;
+  }
+
+  .form-control:focus {
+    border-color: black;
+    box-shadow: 0 0 0 0.2rem rgba(0, 0, 0, 0.1);
+  }
+
+  h1.display-4 {
+    color: var(--yellow-color);
+  }
+</style>
 {% endblock %}
+
+
